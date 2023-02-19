@@ -1,0 +1,41 @@
+﻿PHP Setup (For windows)
+1. php Download https://www.php.net/downloads.php choose thread safe option
+2. Extract → rename to php-8.2.3
+3. Move to C:
+4. Search environment variables in windows (click “Edit the system environment variables”)
+5. Find “Path” in System variables
+6. Click Edit
+7. Click New
+8. Add the path to php in C drive (ex. C:\php-8.2.3)
+9. open command prompt. check php --version
+For macOS please refer to https://www.geeksforgeeks.org/how-to-install-php-on-macos/
+
+
+Apache Server Setup
+1. Apache download https://www.apachelounge.com/download/
+2. Extract zip file
+3. Click into extracted folder
+4. Copy Apache24 to C drive
+5. Go to C:\Apache24\conf
+6. Open httpd.conf in notepad
+7. Add the following to the top of the file
+        #PHP CONFIG
+LoadModule php_module "C:/php-8.2.3/php8apache2_4.dll"
+AddType application/x-httpd-php .php
+PHPIniDir "C:/php-8.2.3"
+LoadFile "C:/php-8.2.3/php8ts.dll"
+8. Uncomment “LoadModule rewrite_module modules/mod_rewrite.so”
+9. Uncomment and Change “#ServerName www.example.com:80” to localhost:80
+10. Save file
+11. Open command prompt as administrator and go to C:\Apache24\bin
+12. Run httpd.exe -k install
+13. Run httpd.exe -k start
+14. Go to browser and go to localhost:80
+15. Make sure it says “It works!”
+For macOS please refer to https://tecadmin.net/install-apache-macos-homebrew/
+
+
+
+
+Useful links:
+* https://websitesetup.org/php-cheat-sheet/
