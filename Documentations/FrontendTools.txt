@@ -1,0 +1,27 @@
+** BOOTSTRAP **
+- The following link is bootstrap's main site
+https://getbootstrap.com/
+
+- The following link explains what bootstrap is 
+https://www.youtube.com/watch?v=AaVy9UR30Dc
+
+** FIGMA **
+- The following link is figma's main site
+https://www.figma.com/
+
+- The following link explains what figma is
+https://www.youtube.com/watch?v=FTFaQWZBqQ8
+
+** CHROME DEVTOOLS **
+- The following link is Chrome DevTool's main site
+https://developer.chrome.com/docs/devtools/
+
+- The following link explains how to use Chrome DevTool
+https://www.youtube.com/watch?v=gTVpBbFWry8
+
+** JQUERY **
+- The following link is jQuery's main site
+https://jquery.com/
+
+- The following link explains how to use jQuery
+https://www.youtube.com/watch?v=BaIgTKj1iCQ
