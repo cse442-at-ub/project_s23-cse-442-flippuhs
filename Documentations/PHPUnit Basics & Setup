@@ -1,0 +1,148 @@
+PHPUnit is a framework for writing tests as well as a command-line tool for running the tests for PHP.
+
+
+Please refer to the following link for the installation of PHPUnit on your machine:
+* Official PHPUnit installation page: https://docs.phpunit.de/en/10.0/installation.html
+
+
+The following Youtube Videos provides additional information on installing PHPUnit as well as a basic tutorial on how to use and run PHPUnit:
+* https://www.youtube.com/watch?v=9-X_b_fxmRM
+* https://www.youtube.com/watch?v=a5ZKCFINUkU
+
+
+Please refer to the official PHPUnit documentation for further information:
+* Official PHPUnit Documentation page: https://docs.phpunit.de/en/10.0/index.html# 
+
+
+Please refer to the following link to see how to run PHPUnit on command-line and for information on the output after running the unit tests:
+* Official PHPUnit Command-Line Test Runner page: https://docs.phpunit.de/en/10.0/textui.html 
+
+
+The following are some simple examples of how to use PHPUnit:
+
+* Example test testing array operations:
+
+<?php declare(strict_types=1);
+use PHPUnit\Framework\TestCase;
+
+
+final class StackTest extends TestCase
+{
+    public function testPushAndPop(): void
+    {
+        $stack = [];
+        $this->assertSame(0, count($stack));
+
+
+        array_push($stack, 'foo');
+        $this->assertSame('foo', $stack[count($stack)-1]);
+        $this->assertSame(1, count($stack));
+
+
+        $this->assertSame('foo', array_pop($stack));
+        $this->assertSame(0, count($stack));
+    }
+}
+
+
+* Example test testing for exception handling:
+
+<?php declare(strict_types=1);
+use PHPUnit\Framework\TestCase;
+
+
+final class ExceptionTest extends TestCase
+{
+    public function testException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+    }
+}
+
+
+* Example test testing for output from echo or print:
+
+<?php declare(strict_types=1);
+use PHPUnit\Framework\TestCase;
+
+
+final class OutputTest extends TestCase
+{
+    public function testExpectFooActualFoo(): void
+    {
+        $this->expectOutputString('foo');
+
+
+        print 'foo';
+    }
+
+
+    public function testExpectBarActualBaz(): void
+    {
+        $this->expectOutputString('bar');
+
+
+        print 'baz';
+    }
+}
+
+
+The following is a list of different assertions available:
+* assertArrayHasKey()
+* assertContains()
+* assertStringContainsString()
+* assertStringContainsStringIgnoringCase()
+* assertContainsOnly()
+* assertContainsOnlyInstancesOf()
+* assertCount()
+* assertDirectoryExists()
+* assertDirectoryIsReadable()
+* assertDirectoryIsWritable()
+* assertEmpty()
+* assertEquals()
+* assertEqualsCanonicalizing()
+* assertEqualsIgnoringCase()
+* assertEqualsWithDelta()
+* assertObjectEquals()
+* assertFalse()
+* assertFileEquals()
+* assertFileExists()
+* assertFileIsReadable()
+* assertFileIsWritable()
+* assertGreaterThan()
+* assertGreaterThanOrEqual()
+* assertInfinite()
+* assertInstanceOf()
+* assertIsArray()
+* assertIsBool()
+* assertIsCallable()
+* assertIsFloat()
+* assertIsInt()
+* assertIsIterable()
+* assertIsNumeric()
+* assertIsObject()
+* assertIsResource()
+* assertIsScalar()
+* assertIsString()
+* assertIsReadable()
+* assertIsWritable()
+* assertJsonFileEqualsJsonFile()
+* assertJsonStringEqualsJsonFile()
+* assertJsonStringEqualsJsonString()
+* assertLessThan()
+* assertLessThanOrEqual()
+* assertNan()
+* assertNull()
+* assertMatchesRegularExpression()
+* assertStringMatchesFormat()
+* assertStringMatchesFormatFile()
+* assertSame()
+* assertSameSize()
+* assertStringEndsWith()
+* assertStringEqualsFile()
+* assertStringStartsWith()
+* assertThat()
+* assertTrue()
+* assertXmlFileEqualsXmlFile()
+* assertXmlStringEqualsXmlFile()
+* assertXmlStringEqualsXmlString()
