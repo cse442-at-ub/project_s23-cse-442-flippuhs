@@ -1,0 +1,64 @@
+The following link is HTML's main site
+https://html.com/
+
+The following link explains how to create,edit and save an HTML file using text editor.
+https://www.w3schools.com/html/html_editors.asp
+
+The following link explains how to create,edit and save an HTML file using Visual Studio Code.
+https://www.youtube.com/watch?v=M8cbD5O9TGQ
+
+The following link explains how to use HTML Headings
+https://www.w3schools.com/html/html_headings.asp
+
+The following link explains how to use CSS in HTML
+https://www.w3schools.com/html/html_css.asp
+
+The following link explains how to use forms
+https://www.w3schools.com/html/html_forms.asp
+
+The following link expplains CSS and how it could be used
+https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS
+
+
+** EXAMPLE OF HTML **
+Source: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_editors 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+</body>
+</html>
+
+
+** EXAMPLE OF CSS **
+Source: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_css_margin
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+p {
+  border: 2px solid powderblue;
+  margin: 50px;
+}
+</style>
+</head>
+<body>
+
+<h1>This is a heading</h1>
+
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>
+<p>This is a paragraph.</p>
+
+</body>
+</html>
+
+
+
+
