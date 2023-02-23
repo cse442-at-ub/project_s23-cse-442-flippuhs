@@ -20,10 +20,10 @@ Apache Server Setup
 6. Open httpd.conf in notepad
 7. Add the following to the top of the file
         #PHP CONFIG
-LoadModule php_module "C:/php-8.2.3/php8apache2_4.dll"
-AddType application/x-httpd-php .php
-PHPIniDir "C:/php-8.2.3"
-LoadFile "C:/php-8.2.3/php8ts.dll"
+        LoadModule php_module "C:/php-8.2.3/php8apache2_4.dll"
+        AddType application/x-httpd-php .php
+        PHPIniDir "C:/php-8.2.3"
+        LoadFile "C:/php-8.2.3/php8ts.dll"
 8. Uncomment “LoadModule rewrite_module modules/mod_rewrite.so”
 9. Uncomment and Change “#ServerName www.example.com:80” to localhost:80
 10. Save file
@@ -33,6 +33,35 @@ LoadFile "C:/php-8.2.3/php8ts.dll"
 14. Go to browser and go to localhost:80
 15. Make sure it says “It works!”
 For macOS please refer to https://tecadmin.net/install-apache-macos-homebrew/
+
+
+------------------------------------------------------------------------------------------------------------
+To get MySQLi working locally
+1. Go to C:\php-8.2.3
+2. Look for php.ini-development or php.ini-production
+3. Copy either (preferably production, and back it up somewhere) and paste it with it renamed as php.ini
+4. Open php.ini
+5. Uncomment extension=mysqli
+6. Uncomment extension=pdo_mysql
+7. Uncomment extension_dir = "ext"
+8. Save the file
+9. Restart Apache --> Open command prompt as administrator and go to C:\Apache24\bin
+10. Run httpd.exe -k stop
+11. Run httpd.exe -k start
+
+------------------------------------------------------------------------------------------------------------
+To use local Apache Server
+To start Apache
+        1. Open command prompt as administrator and go to C:\Apache24\bin
+        2. Start Apache by running Run httpd.exe -k start
+To stop Apache
+        1. Open command prompt as administrator and go to C:\Apache24\bin
+        2. Start Apache by running Run httpd.exe -k stop
+To serve your files in Apache
+        1. Copy files to "C:\Apache24\htdocs"
+        2. Go to localhost:80/name_of_file
+
+
 
 
 
