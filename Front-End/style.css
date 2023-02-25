@@ -1,0 +1,32 @@
+body{
+    height: 100vh;
+    background: linear-gradient(
+      to top,
+      #7998EE 0%,
+      #7998EE 87%,
+      #001253 13%,
+      #001253 100%
+    );
+  }
+  
+  h1 {
+    color: white;
+    font-family: verdana;
+    text-align: center;
+  }
+  
+  h2 {
+    color: white;
+    font-family: verdana;
+    text-align: center;
+  }
+  
+  p {
+    color: black;
+    font-family: verdana;
+    font-size: 20px;
+  }
+  
+  .main-header {
+    text-align: center;
+  }
