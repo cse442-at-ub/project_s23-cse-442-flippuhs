@@ -71,6 +71,25 @@ class DBConn {
             $this->printToConsole("No such user found!");
         }
     }
+
+    function updateUserProfileInfo($firstname, $lastname, $email, $zipcode) {
+        //Check if input email is already being used by another user
+        $stmt = $this->conn->prepare("SELECT email FROM UsersTable WHERE email = ? ");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return 1;
+        }
+        else {
+            $username = "johndoe"; //Temporary dummy value
+            $stmt = $this->conn->prepare("UPDATE UsersTable SET firstname = COALESCE(NULLIF(?, ''), firstname), lastname = COALESCE(NULLIF(?, ''), lastname), email = COALESCE(NULLIF(?, ''), email), zipcode = COALESCE(NULLIF(?, ''), zipcode) WHERE username = ? ");
+            $stmt->bind_param("sssss", $firstname, $lastname, $email, $zipcode, $username);
+            $stmt->execute();
+            $this->printToConsole($stmt->error);
+            return 0;
+        }
+    }
 }
 
 ?>
