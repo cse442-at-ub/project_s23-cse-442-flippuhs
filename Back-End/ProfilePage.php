@@ -3,7 +3,7 @@ require_once("DBConn.php");
 
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
-    2 => "My house is on fire!"
+    2 => "Image upload failed!"
 );
 
 $successMsg = "";
@@ -21,10 +21,18 @@ if(isset($_GET['success'])) {
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
-$firstName = $dbConn->getUserProfileInfo()->getFirstName();
-$lastName = $dbConn->getUserProfileInfo()->getLastName();
-$email = $dbConn->getUserProfileInfo()->getEmail();
-$zipcode = $dbConn->getUserProfileInfo()->getZipcode();
+$userInfo = $dbConn->getUserProfileInfo();
+$firstName = $userInfo->getFirstName();
+$lastName = $userInfo->getLastName();
+$email = $userInfo->getEmail();
+$zipcode = $userInfo->getZipcode();
+$pfpPath = $dbConn->getProfilePicPathExists();
+if($pfpPath!=false){
+    $pfpPath = $dbConn->getProfilePicPathExists();
+}
+else{
+    $pfpPath = "../resources/pfp/defaultPFP.jpg";
+}
 ?>
 
 <html lang="en">
@@ -42,8 +50,10 @@ $zipcode = $dbConn->getUserProfileInfo()->getZipcode();
         <b><p>Email: </b><?php echo $email ?></p>
         <b><p>ZIP Code: </b><?php echo $zipcode ?></p>
 
+        <?php echo "<img src=$pfpPath id='profilePic'>" ?>
+
         <h1>Update Profile</h1>
-        <form action="EditProfile.php" method="post">
+        <form action="EditProfile.php" method="post" enctype="multipart/form-data">
             <p>
                 <b><label for="firstName">First Name:</label></b>
                 <input type="text" name="firstName" id="firstName">
@@ -59,6 +69,10 @@ $zipcode = $dbConn->getUserProfileInfo()->getZipcode();
             <p>
                 <b><label for="zipcode">ZIP Code:</label></b>
                 <input type="text" name="zipcode" id="zipcode">
+            </p>
+            <p>
+                <b><label for="fileToUpload">Select image to upload:</label></b>
+                <input type="file" name="fileToUpload" id="fileToUpload">
             </p>
             <p><span style="color:red"><?php echo $errorMsg ?></span></p>
             <p><span style="color:green"><?php echo $successMsg ?></span></p>
