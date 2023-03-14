@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div style = "position: absolute; left:40px; top:0px;">
+    <h1>Flippuhs</h1>
+    
+</div>
+
+<div style = "position: absolute; left:40px; top:50px;">
+    <h2>Sell For More. Buy For Less.</h2>
+</div>
+
+<div style = "position: absolute; left:600px; top:60px; ;" class="topnav">
+    <input type="text" placeholder="Search..">
+</div>
+
+<input type="image" src="/Users/devinsalemmo/flippuhs/project_s23-cse-442-flippuhs/guest_user_pic.jpeg" name="profileBtn" class="container" id="profileBtn" />
+    
+<img src= "/Users/devinsalemmo/flippuhs/project_s23-cse-442-flippuhs/silversurfer.jpeg"  class = "defaultSearch1" />
+<img src= "/Users/devinsalemmo/flippuhs/project_s23-cse-442-flippuhs/silversurfer.jpeg"  class = "defaultSearch2" />
+<img src= "/Users/devinsalemmo/flippuhs/project_s23-cse-442-flippuhs/silversurfer.jpeg"  class = "defaultSearch3" />
+<img src= "silversurfer.jpeg"  class = "defaultSearch4" />
+<img src= "silversurfer.jpeg"  class = "defaultSearch5" />
+<img src= "silversurfer.jpeg"  class = "defaultSearch6" />
+
+<div class = "white-box">
+
+</div>
+
+
+<button class="openChatBtn" onclick="openForm()">Messages</button>
+<div class="openChat">
+    <form>
+        <h1>Chat</h1>
+        <label for="msg"><b>Message</b></label>
+        <textarea placeholder="Type message.." name="msg" required></textarea>
+        <button type="submit" class="btn">Send</button>
+        <button type="button" class="btn close" onclick="closeForm()">
+        Close
+        </button>
+    </form>
+</div>
+<script>
+    document .querySelector(".openChatBtn") .addEventListener("click", openForm);
+    document.querySelector(".close").addEventListener("click", closeForm);
+    function openForm() {
+       document.querySelector(".openChat").style.display = "block";
+    }
+    function closeForm() {
+       document.querySelector(".openChat").style.display = "none";
+    }
+ </script>
+
+  
+
+
+
+
+</body>
+</html>

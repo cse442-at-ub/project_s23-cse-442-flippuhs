@@ -1,46 +1,186 @@
 body{
-    height: 100vh;
-    background: linear-gradient(
-      to top,
-      #7998EE 0%,
-      #7998EE 90%,
-      #001253 10%,
-      #001253 100%
-    );
-  }
-  
-  h1 {
-    color: white;
-    font-family: verdana;
-    text-align: center;
-    margin: auto;
-  }
-  
-  h2 {
-    color: white;
-    font-family: verdana;
-    text-align: center;
-  }
-  
-  p {
-    color: black;
-    font-family: verdana;
-    font-size: 20px;
-  }
-  
-  .main-header {
-    text-align: center;
-  }
-  
-#profileForm {
-  position: absolute;
-  top: 50%;left: 50%;
-  transform: translate(-50%, -50%);
+  height: 100vh;
+  background: linear-gradient(
+    to top,
+    #7998EE 0%,
+    #7998EE 87%,
+    #001253 13%,
+    #001253 100%
+  );
 }
 
-#profilePic{
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 50%;
+h1 {
+  color: white;
+  font-family: verdana;
+  text-align: center;
+}
+
+h2 {
+  color: white;
+  font-family: verdana;
+  text-align: center;
+}
+
+p {
+  color: black;
+  font-family: verdana;
+  font-size: 20px;
+}
+
+.main-header {
+  text-align: center;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+
+
+.openChatBtn {
+background-color: rgb(123, 28, 179);
+color: white;
+padding: 16px 20px;
+border: none;
+font-weight: 500;
+font-size: 18px;
+cursor: pointer;
+opacity: 0.8;
+position: fixed;
+bottom: 23px;
+right: 28px;
+width: 280px;
+}
+.openChat {
+display: none;
+position: fixed;
+bottom: 0;
+right: 15px;
+border: 3px solid #ff08086b;
+z-index: 9;
+}
+form {
+max-width: 300px;
+padding: 10px;
+background-color: white;
+}
+form textarea {
+width: 100%;
+font-size: 18px;
+padding: 15px;
+margin: 5px 0 22px 0;
+border: none;
+font-weight: 500;
+background: #d5e7ff;
+color: rgb(0, 0, 0);
+resize: none;
+min-height: 200px;
+}
+form textarea:focus {
+background-color: rgb(219, 255, 252);
+outline: none;
+}
+form .btn {
+background-color: rgb(34, 197, 107);
+color: white;
+padding: 16px 20px;
+font-weight: bold;
+border: none;
+cursor: pointer;
+width: 100%;
+margin-bottom: 10px;
+opacity: 0.8;
+}
+form .close {
+background-color: red;
+}
+form .btn:hover, .openChatBtn:hover {
+opacity: 1;
+}
+
+
+.container {
+position: absolute;
+width: 90px;
+height: 90px;
+top: 10px;
+right: 60px;
+
+}
+
+.topnav input[type=text] {
+float: right;
+padding: 6px;
+border: none;
+margin-top: 10px;
+margin-right: 50px;
+font-size: 17px;
+}
+
+.white-box {
+background-color: rgb(121, 223, 238);
+color: black;
+position: absolute;
+width: 1100px;
+height:575px;
+top: 50%;
+left: 50%;
+z-index: -1;
+transform: translate(-50%, -50%);
+}
+
+.defaultSearch1 {
+position: absolute;
+z-index: 1;
+width: 200px;
+height: 200px;
+top: 33%;
+left: 25%;
+transform: translate(-50%, -50%);
+}
+.defaultSearch2 {
+position: absolute;
+z-index: 1;
+width: 200px;
+height: 200px;
+top: 33%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+.defaultSearch3 {
+position: absolute;
+z-index: 1;
+width: 200px;
+height: 200px;
+top: 33%;
+left: 75%;
+transform: translate(-50%, -50%);
+}
+
+.defaultSearch4 {
+position: absolute;
+z-index: 1;
+width: 200px;
+height: 200px;
+top: 66%;
+left: 25%;
+transform: translate(-50%, -50%);
+}
+.defaultSearch5 {
+position: absolute;
+z-index: 1;
+width: 200px;
+height: 200px;
+top: 66%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+.defaultSearch6 {
+position: absolute;
+z-index: 1;
+width: 200px;
+height: 200px;
+top: 66%;
+left: 75%;
+transform: translate(-50%, -50%);
 }
