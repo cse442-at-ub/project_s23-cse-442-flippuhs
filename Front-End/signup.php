@@ -12,7 +12,7 @@
     <br><br><br>
     <p>Sign up</p>
 
-<form action="login.php" method="post">
+<form action="../Back-End/SignUp.php" method="post">
     <p>
         <label for="firstName">First Name:</label>
         <input type="text" name="first_name" id="firstName">

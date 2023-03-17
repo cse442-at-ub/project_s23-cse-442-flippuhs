@@ -8,6 +8,8 @@ class DBConn {
     private $password = "50306365";
     private $dbname = "cse442_2023_spring_team_v_db";
 
+    private $user;
+
     function printToConsole($string) {
         echo '<script>console.log("' . $string . '");</script>';
     }
@@ -26,13 +28,28 @@ class DBConn {
         return $this->conn;
     }
 
+    function getUserFromCookie() {
+        //Commented cookie handling temporarily until login and registration are done
+        if(!isset($_COOKIE['usernameCookie'])) {
+            header("Location: ../Front-End/login.php");
+        } 
+        else {
+            return $this->setUserFromCookie($_COOKIE['usernameCookie']);
+        }
+    }
+
+    function setUserFromCookie($username){
+        $this->user = $username;
+        return $this->user;
+    }
+
     function setupUsersTable() {
         $sql = "CREATE TABLE IF NOT EXISTS UsersTable (
             username VARCHAR(50) NOT NULL PRIMARY KEY,
             firstname VARCHAR(50) NOT NULL,
             lastname VARCHAR(50) NOT NULL,
             email VARCHAR(75) NOT NULL UNIQUE,
-            password VARCHAR(50) NOT NULL,
+            password VARCHAR(216) NOT NULL,
             zipcode VARCHAR(10) NOT NULL
         )";
 
@@ -56,23 +73,9 @@ class DBConn {
         }
     }
 
-    function getUserByUsername() {
-        //Commented cookie handling temporarily until login and registration are done
-        /*
-        $usernameCookie = "username";
-        if(!isset($_COOKIE[$usernameCookie])) {
-            echo "Username cookie is not set!";
-        } 
-        else {
-            //$username = $_COOKIE[$usernameCookie];
-        }
-        */
-    }
-
     function getUserProfileInfo() {
-        $username = "johndoe"; //Temporary dummy value
         $stmt = $this->conn->prepare("SELECT firstname, lastname, email, zipcode FROM UsersTable WHERE username = ? ");
-        $stmt->bind_param("s", $username);
+        $stmt->bind_param("s", $this->getUserFromCookie());
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -86,10 +89,25 @@ class DBConn {
         }
     }
 
-    function getProfilePicPathExists() {
-        $username = "johndoe"; //Temporary dummy value
-        $stmt = $this->conn->prepare("SELECT path FROM ProfilePic WHERE username= ?");
+    function getUserPassword($username) {
+        $stmt = $this->conn->prepare("SELECT password FROM UsersTable WHERE username = ? ");
         $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                return $row["password"];
+            }
+        } 
+        else {
+            $this->printToConsole("No such user found!");
+        }
+    }
+
+    function getProfilePicPathExists() {
+        $stmt = $this->conn->prepare("SELECT path FROM ProfilePic WHERE username= ?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -102,9 +120,21 @@ class DBConn {
         }
     }
 
-    function insertUserProfilePicPath($username,$target_file){
+    function insertUser($username,$firstname,$lastname,$email,$password,$zipcode){
+        $stmt = $this->conn->prepare("INSERT INTO UsersTable (username, firstname, lastname, email, password, zipcode)
+        VALUES (?,?,?,?,?,?)");
+        $stmt->bind_param("ssssss",$username,$firstname,$lastname,$email,$password,$zipcode);
+        if($stmt->execute()==true){
+            $this->printToConsole("Inserted new User");
+        }
+        else{
+            $this->printToConsole("Failed to insert new User");
+        }
+    }
+
+    function insertUserProfilePicPath($target_file){
         $stmt = $this->conn->prepare("INSERT INTO ProfilePic (username, path) VALUES (?,?)");
-        $stmt->bind_param("ss",$username,$target_file);
+        $stmt->bind_param("ss",$this->getUserFromCookie(),$target_file);
         if($stmt->execute()==true){
             $this->printToConsole("Inserted profilepic path");
         }
@@ -123,18 +153,17 @@ class DBConn {
             return 1;
         }
         else {
-            $username = "johndoe"; //Temporary dummy value
             $stmt = $this->conn->prepare("UPDATE UsersTable SET firstname = COALESCE(NULLIF(?, ''), firstname), lastname = COALESCE(NULLIF(?, ''), lastname), email = COALESCE(NULLIF(?, ''), email), zipcode = COALESCE(NULLIF(?, ''), zipcode) WHERE username = ? ");
-            $stmt->bind_param("sssss", $firstname, $lastname, $email, $zipcode, $username);
+            $stmt->bind_param("sssss", $firstname, $lastname, $email, $zipcode, $this->getUserFromCookie());
             $stmt->execute();
             $this->printToConsole($stmt->error);
             return 0;
         }
     }
 
-    function updateUserProfilePicPath($username,$target_file){
+    function updateUserProfilePicPath($target_file){
         $stmt = $this->conn->prepare("UPDATE ProfilePic SET path=? WHERE username= ?");
-        $stmt->bind_param("ss",$target_file,$username);
+        $stmt->bind_param("ss",$target_file,$this->getUserFromCookie());
         if($stmt->execute()==true){
             $this->printToConsole("Updated profilepic path");
         }

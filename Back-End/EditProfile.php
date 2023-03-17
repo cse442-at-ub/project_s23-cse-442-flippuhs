@@ -16,7 +16,6 @@ $conn = $dbConn->connect();
 
 $updateStatus = $dbConn->updateUserProfileInfo($firstName, $lastName, $email, $zipcode);
 
-$username = "johndoe"; //Temporary dummy value
 $target_dir = "../resources/pfp/";
 $target_file = $target_dir . $username . "_" . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
@@ -46,9 +45,9 @@ if (!empty($_FILES["fileToUpload"]["name"][0])) {
             //Check if user already has PFP uploaded so UPDATE instead of INSERT
             $result = $dbConn->getProfilePicPathExists();
             if ($result != false) {
-                $dbConn->updateUserProfilePicPath($username, $target_file);
+                $dbConn->updateUserProfilePicPath($target_file);
             } else {
-                $dbConn->insertUserProfilePicPath($username, $target_file);
+                $dbConn->insertUserProfilePicPath($target_file);
             }
             $image_success = true;
             printToConsole("Profile Picture Path Updated");
