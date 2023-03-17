@@ -1,3 +1,9 @@
+<?php
+    if(isset($_GET['deleted'])) {
+        $deleteMsg = "Your account has been deleted!";
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +16,7 @@
 <center>
     <h2>Sell For More. Buy For Less.</h2>
     <br><br><br>
+    <p><span style="color:red"><?php echo $deleteMsg ?></span></p>
     <p>Sign up</p>
 
 <form action="../Back-End/SignUp.php" method="post">
