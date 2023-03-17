@@ -138,6 +138,15 @@ top: 33%;
 left: 25%;
 transform: translate(-50%, -50%);
 }
+.defaultText1 {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  top: 57%;
+  left: 28%;
+  transform: translate(-50%, -50%);
+  }
 .defaultSearch2 {
 position: absolute;
 z-index: 1;
@@ -147,6 +156,15 @@ top: 33%;
 left: 50%;
 transform: translate(-50%, -50%);
 }
+.defaultText2 {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  top: 57%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  }
 .defaultSearch3 {
 position: absolute;
 z-index: 1;
@@ -156,6 +174,15 @@ top: 33%;
 left: 75%;
 transform: translate(-50%, -50%);
 }
+.defaultText3 {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  top: 57%;
+  left: 77.5%;
+  transform: translate(-50%, -50%);
+  }
 
 .defaultSearch4 {
 position: absolute;
@@ -166,6 +193,16 @@ top: 66%;
 left: 25%;
 transform: translate(-50%, -50%);
 }
+.defaultText4 {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  top: 89%;
+  left: 26%;
+  transform: translate(-50%, -50%);
+  }
+
 .defaultSearch5 {
 position: absolute;
 z-index: 1;
@@ -175,6 +212,15 @@ top: 66%;
 left: 50%;
 transform: translate(-50%, -50%);
 }
+.defaultText5 {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  top: 89%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  }
 .defaultSearch6 {
 position: absolute;
 z-index: 1;
@@ -184,3 +230,12 @@ top: 66%;
 left: 75%;
 transform: translate(-50%, -50%);
 }
+.defaultText6 {
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 200px;
+  top: 89%;
+  left: 77.5%;
+  transform: translate(-50%, -50%);
+  }
