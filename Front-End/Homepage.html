@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div style = "position: absolute; left:40px; top:0px;">
+    <h1>Flippuhs</h1>
+    
+</div>
+
+<div style = "position: absolute; left:40px; top:50px;">
+    <h2>Sell For More. Buy For Less.</h2>
+</div>
+
+<div style = "position: absolute; left:600px; top:60px; ;" class="topnav">
+    <input type="text" placeholder="Search..">
+</div>
+
+
+<button class="container" onClick="window.location.href='https://www-student.cse.buffalo.edu/CSE442-542/2023-Spring/cse-442v/Back-End/ProfilePage.php';">
+    <img src="/CSE442-542/2023-Spring/cse-442v/resources/pfp/defaultPFP.jpg" style = "position: absolute; width: 90px; height: 90px; top: 0px; right: 0px;" />
+</button>
+
+
+<img src= "/CSE442-542/2023-Spring/cse-442v/resources/items/silversurfer.jpeg"  class = "defaultSearch1" />
+<img src= "/CSE442-542/2023-Spring/cse-442v/resources/items/bigpants.jpeg"  class = "defaultSearch2" />
+<img src= "/CSE442-542/2023-Spring/cse-442v/resources/items/coffee.jpeg"  class = "defaultSearch3" />
+<img src= "/CSE442-542/2023-Spring/cse-442v/resources/items/denver.jpeg"  class = "defaultSearch4" />
+<img src= "/CSE442-542/2023-Spring/cse-442v/resources/items/spam.jpeg"  class = "defaultSearch5" />
+<img src= "/CSE442-542/2023-Spring/cse-442v/resources/items/rick.jpeg"  class = "defaultSearch6" />
+
+<div class = "defaultText1">
+    <h3>Yeezy's $250</h3>
+</div>
+<div class = "defaultText2">
+    <h3>Big Pants $80</h3>
+</div>
+<div class = "defaultText3">
+    <h3>Coffee Table $60</h3>
+</div>
+<div class = "defaultText4">
+    <h3>Denver Nugget Jeans $210</h3>
+</div>
+<div class = "defaultText5">
+    <h3>Vintage Spam $44</h3>
+</div>
+<div class = "defaultText6">
+    <h3>Rick Owen's $790</h3>
+</div>
+<div class = "white-box">
+
+</div>
+<div style =  "position: absolute; left:820px; top:70px;">
+    <ul>
+        <li><a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Spring/cse-442v/Front-End/Homepage.html"> Create a Post</a></li>
+        <li><a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Spring/cse-442v/Back-End/ProfilePage.php">Profile</a></li>
+        <li><a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Spring/cse-442v/Front-End/Homepage.html">Electronics</a></li>
+        <li><a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Spring/cse-442v/Front-End/Homepage.html">Clothing</a></li>
+  </ul>
+</div>
+
+
+  
+
+
+<button class="openChatBtn" onclick="openForm()">Messages</button>
+<div class="openChat">
+    <form>
+        <h1>Chat</h1>
+        <label for="msg"><b>Message</b></label>
+        <textarea placeholder="Type message.." name="msg" required></textarea>
+        <button type="submit" class="btn">Send</button>
+        <button type="button" class="btn close" onclick="closeForm()">
+        Close
+        </button>
+    </form>
+</div>
+<script>
+    document .querySelector(".openChatBtn") .addEventListener("click", openForm);
+    document.querySelector(".close").addEventListener("click", closeForm);
+    function openForm() {
+       document.querySelector(".openChat").style.display = "block";
+    }
+    function closeForm() {
+       document.querySelector(".openChat").style.display = "none";
+    }
+ </script>
+
+  
+
+
+
+
+</body>
+</html>
