@@ -38,12 +38,12 @@
 
     <p>
         <label for="password">Password:</label>
-        <input type="text" name="password" id="passWord">
+        <input type="password" name="password" id="passWord">
     </p>
 
     <p>
         <label for="repassword">Re-enter Password:</label>
-        <input type="text" name="repassword" id="repassWord">
+        <input type="password" name="repassword" id="repassWord">
     </p>
 
     <input type="submit" name="userData" value="Submit">

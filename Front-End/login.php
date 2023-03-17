@@ -35,7 +35,7 @@ if ($errorId != 0 && array_key_exists($errorId, $errors)) {
 
     <p>
         <label for="password">Password:</label>
-        <input type="text" name="password" id="passWord">
+        <input type="password" name="password" id="passWord">
     </p>
 
     <input type="submit" name="login" value="Submit">
