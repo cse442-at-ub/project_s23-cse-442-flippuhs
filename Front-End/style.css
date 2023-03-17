@@ -147,6 +147,7 @@ transform: translate(-50%, -50%);
   left: 28%;
   transform: translate(-50%, -50%);
   }
+
 .defaultSearch2 {
 position: absolute;
 z-index: 1;
@@ -156,6 +157,7 @@ top: 33%;
 left: 50%;
 transform: translate(-50%, -50%);
 }
+
 .defaultText2 {
   position: absolute;
   z-index: 1;
@@ -165,6 +167,7 @@ transform: translate(-50%, -50%);
   left: 53%;
   transform: translate(-50%, -50%);
   }
+
 .defaultSearch3 {
 position: absolute;
 z-index: 1;
@@ -174,6 +177,7 @@ top: 33%;
 left: 75%;
 transform: translate(-50%, -50%);
 }
+
 .defaultText3 {
   position: absolute;
   z-index: 1;
@@ -193,6 +197,7 @@ top: 66%;
 left: 25%;
 transform: translate(-50%, -50%);
 }
+
 .defaultText4 {
   position: absolute;
   z-index: 1;
@@ -212,6 +217,7 @@ top: 66%;
 left: 50%;
 transform: translate(-50%, -50%);
 }
+
 .defaultText5 {
   position: absolute;
   z-index: 1;
@@ -221,6 +227,7 @@ transform: translate(-50%, -50%);
   left: 52%;
   transform: translate(-50%, -50%);
   }
+
 .defaultSearch6 {
 position: absolute;
 z-index: 1;
@@ -230,6 +237,7 @@ top: 66%;
 left: 75%;
 transform: translate(-50%, -50%);
 }
+
 .defaultText6 {
   position: absolute;
   z-index: 1;
@@ -239,3 +247,20 @@ transform: translate(-50%, -50%);
   left: 77.5%;
   transform: translate(-50%, -50%);
   }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+  float: left;
+}
+
+a {
+  display: block;
+  padding: 8px;
+  background-color: #ffffff;
+}
