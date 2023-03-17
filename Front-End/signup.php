@@ -1,3 +1,24 @@
+<?php
+$errors = array (
+    1 => "Passwords don't match.",
+    2 => "Password needs at least 8 characters.",
+    3 => "Password needs at least one character.",
+    4 => "Password needs at least one digit.",
+    5 => "Password needs at least one special character (!, @, #, $, %, ^, &, or *)",
+    6 => "A profile with this email has already been created.",
+    7 => "This username is in use.",
+    8 => "Password needs at least on uppercase letter.",
+);
+
+$successMsg = "";
+$errorMsg = "";
+
+$errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
+if ($errorId != 0 && array_key_exists($errorId, $errors)) {
+    $errorMsg = $errors[$errorId];
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +68,7 @@
     </p>
 
     <input type="submit" name="userData" value="Submit">
+    <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>
 </center>
 
