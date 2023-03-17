@@ -21,17 +21,23 @@ if(isset($_GET['success'])) {
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
-$userInfo = $dbConn->getUserProfileInfo();
-$firstName = $userInfo->getFirstName();
-$lastName = $userInfo->getLastName();
-$email = $userInfo->getEmail();
-$zipcode = $userInfo->getZipcode();
-$pfpPath = $dbConn->getProfilePicPathExists();
-if($pfpPath!=false){
+if($dbConn->getUserProfileInfo()!=false){
+    //check that usernameCookie exists or else redirect to login page
+    $userInfo = $dbConn->getUserProfileInfo();
+    $firstName = $userInfo->getFirstName();
+    $lastName = $userInfo->getLastName();
+    $email = $userInfo->getEmail();
+    $zipcode = $userInfo->getZipcode();
     $pfpPath = $dbConn->getProfilePicPathExists();
+    if($pfpPath!=false){
+        $pfpPath = $dbConn->getProfilePicPathExists();
+    }
+    else{
+        $pfpPath = "../resources/pfp/defaultPFP.jpg";
+    }
 }
 else{
-    $pfpPath = "../resources/pfp/defaultPFP.jpg";
+    header("Location: ../Front-End/login.php");
 }
 ?>
 
@@ -43,6 +49,9 @@ else{
 </head>
 
 <body>
+    <div class="topleft">
+        <a href="../Front-End/Homepage.html"><img src="../resources/Flippuhs.png"></a>
+    </div>
     <div id="profileForm">
         <h1>Profile Information</h1>
         <b><p>First Name: </b><?php echo $firstName ?></p>
@@ -76,7 +85,10 @@ else{
             </p>
             <p><span style="color:red"><?php echo $errorMsg ?></span></p>
             <p><span style="color:green"><?php echo $successMsg ?></span></p>
-            <input type="submit" value="Confirm"></input>
+            <input type="submit" name="editProfile" value="Confirm"></input>
+        </form>
+        <form action="EditProfile.php" method="POST">
+            <input type="submit" name="deleteAccount" value="Delete Account"/>
         </form>
     </div>
 </body>

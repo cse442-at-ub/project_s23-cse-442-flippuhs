@@ -10,7 +10,7 @@ if (isset($_POST['login'])) {
     $pass = $_POST['password'];
 
     if (password_verify($pass, $dbConn->getUserPassword($user))){
-        setcookie('usernameCookie', $user);
+        setcookie('usernameCookie', $user,0,'/');
         // header("Location: ../Front-End/Homepage.html");
         header("Location: ../Back-End/ProfilePage.php");
     }

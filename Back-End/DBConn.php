@@ -86,6 +86,7 @@ class DBConn {
         } 
         else {
             $this->printToConsole("No such user found!");
+            return false;
         }
     }
 
@@ -172,6 +173,24 @@ class DBConn {
         }
     }
 
+    function deleteUser() {
+        $stmt = $this->conn->prepare("DELETE FROM UsersTable WHERE username= ?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        if($stmt->execute()==true){
+            $this->printToConsole("Deleted user from UsersTable");
+        }
+        else{
+            $this->printToConsole("Failed to delete user from UsersTable");
+        }
+        $stmt = $this->conn->prepare("DELETE FROM ProfilePic WHERE username= ?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        if($stmt->execute()==true){
+            $this->printToConsole("Deleted user from ProfilePic");
+        }
+        else{
+            $this->printToConsole("Failed to delete user from ProfilePic");
+        }
+    }
    }
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 $errors = array (
     1 => "Passwords don't match.",
     2 => "Password needs at least 8 characters.",
@@ -17,6 +18,11 @@ $errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
 if ($errorId != 0 && array_key_exists($errorId, $errors)) {
     $errorMsg = $errors[$errorId];
 }
+
+if(isset($_GET['deleted'])) {
+   $deleteMsg = "Your account has been deleted!";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +37,7 @@ if ($errorId != 0 && array_key_exists($errorId, $errors)) {
 <center>
     <h2>Sell For More. Buy For Less.</h2>
     <br><br><br>
+    <p><span style="color:red"><?php echo $deleteMsg ?></span></p>
     <p>Sign up</p>
 
 <form action="../Back-End/SignUp.php" method="post">
