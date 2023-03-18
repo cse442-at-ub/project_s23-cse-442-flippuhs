@@ -16,7 +16,8 @@ if (isset($_POST['userData'])) {
 
     //Check if email already exists
     $stmt = $conn->prepare("SELECT * FROM UsersTable WHERE email=?");
-    $stmt->execute([$email]); 
+    $stmt->bind_param("s", $email);
+    $stmt->execute(); 
     $exists = $stmt->fetch();
 
     if ($exists) {
@@ -26,7 +27,8 @@ if (isset($_POST['userData'])) {
 
     //Check if username already in use
     $stmt = $conn->prepare("SELECT * FROM UsersTable WHERE username=?");
-    $stmt->execute([$user]); 
+    $stmt->bind_param("s", $user);
+    $stmt->execute();
     $exists = $stmt->fetch();
 
     if ($exists) {
