@@ -45,6 +45,12 @@
   transform: translate(-50%, -50%);
 }
 
+#profilePic{
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
 .openChatBtn {
 background-color: rgb(123, 28, 179);
@@ -68,11 +74,11 @@ right: 15px;
 border: 3px solid #ff08086b;
 z-index: 9;
 }
-form {
+/* form {
 max-width: 300px;
 padding: 10px;
 background-color: white;
-}
+} */
 form textarea {
 width: 100%;
 font-size: 18px;
@@ -106,7 +112,6 @@ background-color: red;
 form .btn:hover, .openChatBtn:hover {
 opacity: 1;
 }
-
 
 .container {
 position: absolute;
