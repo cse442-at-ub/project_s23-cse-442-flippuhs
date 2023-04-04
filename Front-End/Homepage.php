@@ -1,3 +1,12 @@
+<?php
+if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
+    header('Location: '.
+    'https://'.
+    $_SERVER['SERVER_NAME'].
+    $_SERVER['PHP_SELF']);
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,10 +63,10 @@
 </div>
 <div style =  "position: absolute; left:820px; top:70px;">
     <ul>
-        <li><a href="../Front-End/Homepage.html"> Create a Post</a></li>
+        <li><a href="../Front-End/Homepage.php"> Create a Post</a></li>
         <li><a href="../Back-End/ProfilePage.php">Profile</a></li>
-        <li><a href="../Front-End/Homepage.html">Electronics</a></li>
-        <li><a href="../Front-End/Homepage.html">Clothing</a></li>
+        <li><a href="../Front-End/Homepage.php">Electronics</a></li>
+        <li><a href="../Front-End/Homepage.php">Clothing</a></li>
   </ul>
 </div>
 

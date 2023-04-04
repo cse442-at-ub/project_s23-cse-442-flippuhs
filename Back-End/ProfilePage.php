@@ -1,6 +1,13 @@
 <?php
 require_once("DBConn.php");
 
+if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
+    header('Location: '.
+    'https://'.
+    $_SERVER['SERVER_NAME'].
+    $_SERVER['PHP_SELF']);
+}
+
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
     2 => "Image upload failed!"
@@ -50,7 +57,7 @@ else{
 
 <body>
     <div class="topleft">
-        <a href="../Front-End/Homepage.html"><img src="../resources/Flippuhs.png"></a>
+        <a href="../Front-End/Homepage.php"><img src="../resources/Flippuhs.png"></a>
     </div>
     <div id="profileForm">
         <h1>Profile Information</h1>

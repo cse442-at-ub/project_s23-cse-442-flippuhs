@@ -1,4 +1,10 @@
 <?php
+if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
+    header('Location: '.
+    'https://'.
+    $_SERVER['SERVER_NAME'].
+    $_SERVER['PHP_SELF']);
+}
 
 $errors = array (
     1 => "Passwords don't match.",

@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
             setcookie('usernameCookie', '', time() - 3600, '/'); // empty value and old timestamp
         }
         setcookie('usernameCookie', $user,0,'/');
-        header("Location: ../Front-End/Homepage.html");
+        header("Location: ../Front-End/Homepage.php");
     }
     else{
         header("Location: ../Front-End/login.php?error=1");
