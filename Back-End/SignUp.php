@@ -15,22 +15,14 @@ if (isset($_POST['userData'])) {
     $invalid = true;
 
     //Check if email already exists
-    $stmt = $conn->prepare("SELECT * FROM UsersTable WHERE email=?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute(); 
-    $exists = $stmt->fetch();
-
+    $exists = $dbConn->getEmailExists($email);
     if ($exists) {
         header("Location: ../Front-End/signup.php?error=6");
         $invalid = false;
     }
 
     //Check if username already in use
-    $stmt = $conn->prepare("SELECT * FROM UsersTable WHERE username=?");
-    $stmt->bind_param("s", $user);
-    $stmt->execute();
-    $exists = $stmt->fetch();
-
+    $exists =  $dbConn->getUserExists($user);
     if ($exists) {
         header("Location: ../Front-End/signup.php?error=7");
         $invalid = false;
