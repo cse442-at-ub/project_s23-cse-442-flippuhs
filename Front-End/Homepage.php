@@ -31,6 +31,20 @@ else{
     header("Location: ../Front-End/login.php");
 }
 
+if (isset($_GET['pageno'])) {
+    $pageno = $_GET['pageno'];
+} else {
+    $pageno = 1;
+}
+
+$no_of_records_per_page = 2;
+$offset = ($pageno-1) * $no_of_records_per_page; 
+
+$total_rows = $dbConn->getNumListings();
+$total_pages = ceil($total_rows / $no_of_records_per_page);
+
+$resData = $dbConn->getListings($offset,$no_of_records_per_page);
+
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +56,29 @@ else{
 
 <body>
 <?php include 'navbar.php';?>
-
+<ul class="pagination">
+    <li><a href="?pageno=1">First</a></li>
+    <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">
+        <a href="<?php if($pageno <= 1){ echo '#'; } else { echo "?pageno=".($pageno - 1); } ?>">Prev</a>
+    </li>
+    <li class="<?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
+        <a href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo "?pageno=".($pageno + 1); } ?>">Next</a>
+    </li>
+    <li><a href="?pageno=<?php echo $total_pages; ?>">Last</a></li>
+</ul>
+<table style='width:80%'>
+	<?php if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
+	<tr>
+		<td>
+        <?php echo "<img src='$row[imagepath]'  width='200' height='200'>".'<br>'; ?>
+        Item Name: <?php echo $row['itemname'].'<br>'; ?>
+        Item Description: <?php echo $row['itemdesc'].'<br>'; ?>
+		Item Price: <?php echo '$'.$row['price'].'<br>'; ?>
+        Seller: <?php echo "<a href='LINK'>".$row['username']."<br><br></a>"; ?>
+        </td>
+	</tr>
+	<?php endwhile; ?>
+</table>
 <button class="openChatBtn" onclick="openForm()">Messages</button>
 <div class="openChat">
     <form id="login-container">

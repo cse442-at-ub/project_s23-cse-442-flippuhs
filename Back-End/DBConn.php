@@ -25,22 +25,60 @@ class DBConn {
         $this->printToConsole("Connected successfully!");
         $this->setupUsersTable();
         $this->setupProfilePicTable();
+        $this->setupListingsTable();
         return $this->conn;
     }
 
     function getUserFromCookie() {
-        //Commented cookie handling temporarily until login and registration are done
         if(!isset($_COOKIE['usernameCookie'])) {
             header("Location: ../Front-End/login.php");
         } 
         else {
-            return $this->setUserFromCookie($_COOKIE['usernameCookie']);
+            $stmt = $this->conn->prepare("SELECT username FROM UserCookie WHERE hash=?");
+            $stmt->bind_param("s", $_COOKIE['usernameCookie']);
+            $stmt->execute(); 
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    return $row["username"];
+                }
+            } 
         }
     }
 
-    function setUserFromCookie($username){
-        $this->user = $username;
-        return $this->user;
+    function getUnhashUserFromCookie($hash) {
+        $stmt = $this->conn->prepare("SELECT username FROM UserCookie WHERE hash=?");
+        $stmt->bind_param("s", $hash);
+        $stmt->execute(); 
+        return $stmt->fetch();
+    }
+
+    function insertUsernameHash($username,$hash){
+        $stmt = $this->conn->prepare("SELECT * FROM UserCookie WHERE username = ? ");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $stmt = $this->conn->prepare("UPDATE UserCookie SET hash=? WHERE username= ?");
+            $stmt->bind_param("ss",$hash,$username);
+            if($stmt->execute()==true){
+                $this->printToConsole("Updated UserCookie path");
+            }
+            else{
+                $this->printToConsole("Failed to update UserCookie");
+            }
+        }
+        else{
+            $stmt = $this->conn->prepare("INSERT INTO UserCookie (username, hash)
+            VALUES (?,?)");
+            $stmt->bind_param("ss",$username,$hash);
+            if($stmt->execute()==true){
+                $this->printToConsole("Inserted new UserCookie");
+            }
+            else{
+                $this->printToConsole("Failed to insert new UserCookie");
+            }
+        }
     }
 
     function setupUsersTable() {
@@ -68,6 +106,22 @@ class DBConn {
 
         if ($this->conn->query($sql) === TRUE) {
             $this->printToConsole("Table 'ProfilePic' created successfully OR already exists");
+        } else {
+            $this->printToConsole("Error creating table: " . $this->conn->error);
+        }
+    }
+
+    function setupListingsTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS Listings (
+            itemname VARCHAR(2048) NOT NULL,
+            itemdesc VARCHAR(2048) NOT NULL,
+            price INT NOT NULL,
+            imagepath VARCHAR(2048) NOT NULL,
+            username VARCHAR(512) NOT NULL
+            )";
+
+        if ($this->conn->query($sql) === TRUE) {
+            $this->printToConsole("Table 'Listings' created successfully OR already exists");
         } else {
             $this->printToConsole("Error creating table: " . $this->conn->error);
         }
@@ -135,6 +189,34 @@ class DBConn {
         }
     }
 
+    function getNumListings() {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                return $row["COUNT(*)"];
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListings($offset, $no_of_records_per_page) {
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? LIMIT $offset, $no_of_records_per_page");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+
     function insertUser($username,$firstname,$lastname,$email,$password,$zipcode){
         $stmt = $this->conn->prepare("INSERT INTO UsersTable (username, firstname, lastname, email, password, zipcode)
         VALUES (?,?,?,?,?,?)");
@@ -155,6 +237,17 @@ class DBConn {
         }
         else{
             $this->printToConsole("Failed to insert profilepic path");
+        }
+    }
+
+    function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username){
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username) VALUES (?,?,?,?,?)");
+        $stmt->bind_param("ssiss",$itemname, $itemdesc, $price, $imagepath, $username);
+        if($stmt->execute()==true){
+            $this->printToConsole("Inserted new listing");
+        }
+        else{
+            $this->printToConsole("Failed to insert new listing");
         }
     }
 

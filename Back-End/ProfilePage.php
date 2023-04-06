@@ -10,7 +10,8 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
-    2 => "Image upload failed!"
+    2 => "Image upload failed!",
+    3 => "Image is too large!"
 );
 
 $successMsg = "";
@@ -62,7 +63,7 @@ else{
 
     <form id="login-container" action="EditProfile.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <div style="text-align: center"><?php echo "<img src=$pfpPath id='pfp'>"?></div>
+            <div style="text-align: center"><img id="pfp" src="<?php echo $pfpPath?>"/></div>
             <h1 id="logo">Profile Information</h1>
         </div>
         <div class="form-group">
@@ -84,6 +85,7 @@ else{
         <div class="form-group">
             <label class="signuptext" for="fileToUpload">Select image to upload:</label>
             <input class="fileinput" type="file" name="fileToUpload" id="fileToUpload">
+            <label class="signuptext">Maximum upload file size: 2 MB.</label>
         </div>
         <div class="form-group">
             <p><span style="color:red"><?php echo $errorMsg ?></span></p>
