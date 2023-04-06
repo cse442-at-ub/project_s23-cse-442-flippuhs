@@ -74,7 +74,6 @@ if(isset($_GET['deleted'])) {
 
     <input class="login-button" type="submit" name="userData" value="Sign Up">
 
-    <input type="submit" name="userData" value="Submit">
     <a href="../Front-End/login.php"> Already have an account? Sign in.</a>
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>

@@ -42,7 +42,6 @@ if ($errorId != 0 && array_key_exists($errorId, $errors)) {
     <input class="login-button" type="submit" name="login" value="Login">
     </p>
 
-    <input type="submit" name="login" value="Submit">
     <a href="../Front-End/signup.php"> Don't have an account? Sign up.</a>
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>

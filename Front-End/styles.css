@@ -180,3 +180,21 @@ body {
         border: 2px solid goldenrod;
         border-radius: 10px;
     }
+
+.logoutbutton {
+    background-color: gold;
+    color: white;
+    padding: 5px;
+    border: 2px solid gold;
+    border-radius: 10px;
+    margin-right: 5px;
+    margin-top: 25%;
+    width: max-content;
+}
+
+    .logoutbutton:hover {
+        background-color: goldenrod;
+        color: white;
+        border: 2px solid goldenrod;
+        border-radius: 10px;
+    }
