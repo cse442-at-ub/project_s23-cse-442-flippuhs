@@ -15,33 +15,26 @@ if ($errorId != 0 && array_key_exists($errorId, $errors)) {
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<title>Login to Flippuhs</title>
 </head>
 
 <body>
+<?php include 'navbarLoggedOut.php';?>
 
-<h1>Flippuhs</h1>
-<center>
-    <h2>Sell For More. Buy For Less.</h2>
-    <br>
-    <p>Login</p>
-    
-
-<form action="../Back-End/Login.php" method="post">
-    <p>
-        <label for="userName">Username:</label>
+<form id="login-container" action="../Back-End/Login.php" method="post">
+    <div class="form-group">
+        <label class="signuptext" for="userName">Username:</label>
         <input type="text" name="username" id="userName">
-    </p>
-
-    <p>
-        <label for="password">Password:</label>
+    </div>
+    <div class="form-group">
+        <label class="signuptext" for="password">Password:</label>
         <input type="password" name="password" id="passWord">
-    </p>
-
-    <input type="submit" name="login" value="Submit">
+    </div>
+    <input class="login-button" type="submit" name="login" value="Login">
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>
-</center>
 
 </body>
 </html>

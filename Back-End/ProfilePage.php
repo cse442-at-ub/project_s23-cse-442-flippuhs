@@ -44,53 +44,50 @@ else{
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="../Front-End/style.css">
+    <link rel="stylesheet" href="../Front-End/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>My Profile</title>
 </head>
 
 <body>
-    <div class="topleft">
-        <a href="../Front-End/Homepage.html"><img src="../resources/Flippuhs.png"></a>
-    </div>
-    <div id="profileForm">
-        <h1>Profile Information</h1>
-        <b><p>First Name: </b><?php echo $firstName ?></p>
-        <b><p>Last Name: </b><?php echo $lastName ?></p>
-        <b><p>Email: </b><?php echo $email ?></p>
-        <b><p>ZIP Code: </b><?php echo $zipcode ?></p>
 
-        <?php echo "<img src=$pfpPath id='profilePic'>" ?>
+    <?php include '../Front-End/navbar.php';?>
 
-        <h1>Update Profile</h1>
-        <form action="EditProfile.php" method="post" enctype="multipart/form-data">
-            <p>
-                <b><label for="firstName">First Name:</label></b>
-                <input type="text" name="firstName" id="firstName">
-            </p>
-            <p>
-                <b><label for="lastName">Last Name:</label></b>
-                <input type="text" name="lastName" id="lastName">
-            </p>
-            <p>
-                <b><label for="emailAddress">Email Address:</label></b>
-                <input type="text" name="email" id="emailAddress">
-            </p>
-            <p>
-                <b><label for="zipcode">ZIP Code:</label></b>
-                <input type="text" name="zipcode" id="zipcode">
-            </p>
-            <p>
-                <b><label for="fileToUpload">Select image to upload:</label></b>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-            </p>
+    <form id="login-container" action="EditProfile.php" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <div style="text-align: center"><?php echo "<img src=$pfpPath id='pfp'>"?></div>
+            <h1 id="logo">Profile Information</h1>
+        </div>
+        <div class="form-group">
+            <label class="signuptext" for="firstName">First Name:</label>
+            <input type="text" name="firstName" id="firstName" value=<?php echo $firstName?>>
+        </div>
+        <div class="form-group">
+            <label class="signuptext" for="lastName">Last Name:</label>
+            <input type="text" name="lastName" id="lastName" value=<?php echo $lastName?>>
+        </div>
+        <div class="form-group">
+            <label class="signuptext" for="emailAddress">Email Address:</label></b>
+            <input type="text" name="email" id="emailAddress" placeholder=<?php echo $email?>>
+        </div>
+        <div class="form-group">
+            <label class="signuptext" for="zipcode">ZIP Code:</label>
+            <input type="text" name="zipcode" id="zipcode" value=<?php echo $zipcode?>>
+        </div>
+        <div class="form-group">
+            <label class="signuptext" for="fileToUpload">Select image to upload:</label>
+            <input class="fileinput" type="file" name="fileToUpload" id="fileToUpload">
+        </div>
+        <div class="form-group">
             <p><span style="color:red"><?php echo $errorMsg ?></span></p>
             <p><span style="color:green"><?php echo $successMsg ?></span></p>
-            <input type="submit" name="editProfile" value="Confirm"></input>
-        </form>
-        <form action="EditProfile.php" method="POST">
-            <input type="submit" name="deleteAccount" value="Delete Account"/>
-        </form>
-    </div>
+        </div>
+        <div class="form-group">
+            <input class="navbarbutton2" style="width:100%; margin: 10px auto" type="submit" name="editProfile" value="Confirm"></input>
+            <input class="navbarbutton1" style="width:100%; margin: 10px auto" type="submit" name="deleteAccount" value="Delete Account"/>
+        </div>
+    </form>
+
 </body>
 
 </html>

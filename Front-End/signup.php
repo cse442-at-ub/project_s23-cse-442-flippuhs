@@ -28,56 +28,47 @@ if(isset($_GET['deleted'])) {
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<title>Sign Up on Flippuhs</title>
 </head>
 
 <body>
-<h1>Flippuhs</h1>
+<?php include 'navbarLoggedOut.php';?>
 
-<center>
-    <h2>Sell For More. Buy For Less.</h2>
-    <br><br><br>
-    <p><span style="color:red"><?php echo $deleteMsg ?></span></p>
-    <p>Sign up</p>
-
-<form action="../Back-End/SignUp.php" method="post">
-    <p>
-        <label for="firstName">First Name:</label>
+<form id="login-container" action="../Back-End/SignUp.php" method="post">
+    <div class="form-group">
+        <label class="signuptext" for="firstName">First Name:</label>
         <input type="text" name="first_name" id="firstName">
-    </p>
-    <p>
-        <label for="lastName">Last Name:</label>
+    </div>
+    <div class="form-group">
+        <label class="signuptext" for="lastName">Last Name:</label>
         <input type="text" name="last_name" id="lastName">
-    </p>
-    <p>
-        <label for="emailAddress">Email Address:</label>
-        <input type="text" name="email" id="emailAddress">
-    </p>
-
-    <p>
-        <label for="userName">Username:</label>
+        </div>
+    <div class="form-group">
+        <label class="signuptext" for="emailAddress">Email Address:</label>
+        <input type="email" name="email" id="emailAddress">
+    </div>
+    <div class="form-group">
+        <label class="signuptext" for="userName">Username:</label>
         <input type="text" name="username" id="userName">
-    </p>
-
-    <p>
-        <label for="zipCode">Zipcode:</label>
+    </div>
+    <div class="form-group">
+        <label class="signuptext" for="zipCode">Zipcode:</label>
         <input type="text" name="zipcode" id="zipCode">
-    </p>
-
-    <p>
-        <label for="password">Password:</label>
+    </div>
+    <div class="form-group">
+        <label class="signuptext" for="password">Password:</label>
         <input type="password" name="password" id="passWord">
-    </p>
-
-    <p>
-        <label for="repassword">Re-enter Password:</label>
+    </div>
+    <div class="form-group">
+        <label class="signuptext" for="repassword">Re-enter Password:</label>
         <input type="password" name="repassword" id="repassWord">
-    </p>
+    </div>
 
-    <input type="submit" name="userData" value="Submit">
+    <input class="login-button" type="submit" name="userData" value="Sign Up">
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>
-</center>
 
 </body>
 </html>
