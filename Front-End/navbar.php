@@ -1,4 +1,17 @@
 <?php
+    
+    require_once('../Back-End/DBConn.php');
+
+    if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
+        header('Location: '.
+        'https://'.
+        $_SERVER['SERVER_NAME'].
+        $_SERVER['PHP_SELF']);
+    }
+
+    $dbConn = new DBConn();
+    $conn = $dbConn->connect();
+
     if($dbConn->getUserProfileInfo()!=false){
         //check that usernameCookie exists or else redirect to login page
         $userInfo = $dbConn->getUserProfileInfo();
