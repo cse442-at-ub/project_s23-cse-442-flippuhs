@@ -23,4 +23,13 @@ if (isset($_POST['login'])) {
     
     
 }
+
+if(isset($_POST["logout"])){
+    //clear cookie
+    if (isset($_COOKIE['usernameCookie'])) {
+        unset($_COOKIE['usernameCookie']);
+        setcookie('usernameCookie', '', time() - 3600, '/'); // empty value and old timestamp
+    }
+    header("Location: ../Front-End/login.php");
+}
 ?>

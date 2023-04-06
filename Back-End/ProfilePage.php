@@ -1,6 +1,13 @@
 <?php
 require_once("DBConn.php");
 
+if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
+    header('Location: '.
+    'https://'.
+    $_SERVER['SERVER_NAME'].
+    $_SERVER['PHP_SELF']);
+}
+
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
     2 => "Image upload failed!"

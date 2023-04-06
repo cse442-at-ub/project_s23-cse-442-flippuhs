@@ -73,6 +73,20 @@ class DBConn {
         }
     }
 
+    function getEmailExists($email){
+        $stmt = $this->conn->prepare("SELECT * FROM UsersTable WHERE email=?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute(); 
+        return $stmt->fetch();
+    }
+
+    function getUserExists($user){
+        $stmt = $this->conn->prepare("SELECT * FROM UsersTable WHERE username=?");
+        $stmt->bind_param("s", $user);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
     function getUserProfileInfo() {
         $stmt = $this->conn->prepare("SELECT firstname, lastname, email, zipcode FROM UsersTable WHERE username = ? ");
         $stmt->bind_param("s", $this->getUserFromCookie());

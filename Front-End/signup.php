@@ -1,4 +1,10 @@
 <?php
+if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
+    header('Location: '.
+    'https://'.
+    $_SERVER['SERVER_NAME'].
+    $_SERVER['PHP_SELF']);
+}
 
 $errors = array (
     1 => "Passwords don't match.",
@@ -67,6 +73,9 @@ if(isset($_GET['deleted'])) {
     </div>
 
     <input class="login-button" type="submit" name="userData" value="Sign Up">
+
+    <input type="submit" name="userData" value="Submit">
+    <a href="../Front-End/login.php"> Already have an account? Sign in.</a>
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>
 
