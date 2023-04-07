@@ -10,8 +10,7 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
-    2 => "Image upload failed!",
-    3 => "Image is too large!"
+    2 => "Image upload failed!"
 );
 
 $successMsg = "";
@@ -84,7 +83,7 @@ else{
         </div>
         <div class="form-group">
             <label class="signuptext" for="fileToUpload">Select image to upload:</label>
-            <input class="fileinput" type="file" name="fileToUpload" id="fileToUpload">
+            <input class="fileinput" type="file" name="fileToUpload" onchange="VerifyUploadSizeIsOK()" id="fileToUpload">
             <label class="signuptext">Maximum upload file size: 2 MB.</label>
         </div>
         <div class="form-group">
@@ -96,6 +95,23 @@ else{
             <input class="navbarbutton1" style="width:100%; margin: 10px auto" type="submit" name="deleteAccount" value="Delete Account"/>
         </div>
     </form>
+
+    <script type="text/javascript">
+        function VerifyUploadSizeIsOK()
+        {
+        /* Attached file size check. Will Bontrager Software LLC, https://www.willmaster.com */
+        var UploadFieldID = "fileToUpload";
+        var MaxSizeInBytes = 2097152;
+        var fld = document.getElementById(UploadFieldID);
+        if( fld.files && fld.files.length == 1 && fld.files[0].size > MaxSizeInBytes )
+        {
+            alert("The file size must be no more than " + parseInt(MaxSizeInBytes/1024/1024) + "MB");
+            window.location = '../Back-End/ProfilePage.php'
+            return false;
+        }
+        return true;
+        }
+    </script>
 
 </body>
 

@@ -26,11 +26,27 @@
         </div>
         <div class="form-group">
             <label class="signuptext" for="imageToUpload">Select image to upload:</label>
-            <input class="fileinput" type="file" name="imageToUpload" id="imageToUpload" required="required">
+            <input class="fileinput" type="file" name="imageToUpload" onchange="VerifyUploadSizeIsOK()" id="imageToUpload" required="required">
         </div>
         <div class="form-group">
             <input class="navbarbutton2" style="width:100%; margin: 10px auto" type="submit" name="createListing" value="Confirm"></input>
         </div>
     </form>
+    <script type="text/javascript">
+        function VerifyUploadSizeIsOK()
+        {
+        /* Attached file size check. Will Bontrager Software LLC, https://www.willmaster.com */
+        var UploadFieldID = "imageToUpload";
+        var MaxSizeInBytes = 2097152;
+        var fld = document.getElementById(UploadFieldID);
+        if( fld.files && fld.files.length == 1 && fld.files[0].size > MaxSizeInBytes )
+        {
+            alert("The file size must be no more than " + parseInt(MaxSizeInBytes/1024/1024) + "MB");
+            window.location = '../Front-End/CreateListing.php'
+            return false;
+        }
+        return true;
+        }
+    </script>
 </body>
 </html>
