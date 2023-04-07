@@ -190,7 +190,8 @@ class DBConn {
     }
 
     function getNumListings() {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings");
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
