@@ -40,10 +40,10 @@ if (isset($_GET['pageno'])) {
 $no_of_records_per_page = 2;
 $offset = ($pageno-1) * $no_of_records_per_page; 
 
-$total_rows = $dbConn->getNumListings();
+$total_rows = $dbConn->getNumListingsForSale();
 $total_pages = ceil($total_rows / $no_of_records_per_page);
 
-$resData = $dbConn->getListings($offset,$no_of_records_per_page);
+$resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
 
 ?>
 

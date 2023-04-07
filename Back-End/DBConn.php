@@ -117,7 +117,8 @@ class DBConn {
             itemdesc VARCHAR(2048) NOT NULL,
             price INT NOT NULL,
             imagepath VARCHAR(2048) NOT NULL,
-            username VARCHAR(512) NOT NULL
+            username VARCHAR(512) NOT NULL,
+            status VARCHAR(50) NOT NULL
             )";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -189,9 +190,10 @@ class DBConn {
         }
     }
 
-    function getNumListings() {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=?");
-        $stmt->bind_param("s", $this->getUserFromCookie());
+    function getNumListingsForSale() {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND status=?");
+        $forsale = "For sale";
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -204,9 +206,10 @@ class DBConn {
         }
     }
 
-    function getListings($offset, $no_of_records_per_page) {
-        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? LIMIT $offset, $no_of_records_per_page");
-        $stmt->bind_param("s", $this->getUserFromCookie());
+    function getListingsForSale($offset, $no_of_records_per_page) {
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND status=? LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -242,8 +245,9 @@ class DBConn {
     }
 
     function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username){
-        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username) VALUES (?,?,?,?,?)");
-        $stmt->bind_param("ssiss",$itemname, $itemdesc, $price, $imagepath, $username);
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, status) VALUES (?,?,?,?,?,?)");
+        $forsale = "For sale";
+        $stmt->bind_param("ssisss",$itemname, $itemdesc, $price, $imagepath, $username,$forsale);
         if($stmt->execute()==true){
             $this->printToConsole("Inserted new listing");
         }
