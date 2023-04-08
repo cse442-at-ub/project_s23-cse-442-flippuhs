@@ -66,7 +66,8 @@ body {
             border: 2px solid gold;
             border-radius: 10px;
         }
-#login-container input[type=text], input[type=email], input[type=password], select {
+
+#login-container input[type=text], input[type=email], input[type=password], input[type=number], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -100,7 +101,8 @@ body {
     margin-top: 10px;
     margin: 5% auto;
     width: 50%;
-    background-color: #333
+    background-color: #333;
+    overflow: auto;
 }
 
 .loginlogo {
@@ -198,3 +200,17 @@ body {
         border: 2px solid goldenrod;
         border-radius: 10px;
     }
+
+.pagination {
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+.listing {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5%;
+    display: block;
+    margin: auto;
+}

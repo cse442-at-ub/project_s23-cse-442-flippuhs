@@ -56,7 +56,6 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
 
 <body>
 <?php include 'navbar.php';?>
-<br>
 <ul class="pagination">
     <li><a class='logoutbutton' href="?pageno=1">First</a></li>
     <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">
@@ -71,11 +70,16 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
 	<?php if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
 	<tr>
 		<td>
-        <?php echo "<img src='$row[imagepath]'  width='200' height='200'>".'<br>'; ?>
-        Item Name: <?php echo $row['itemname'].'<br>'; ?>
-        Item Description: <?php echo $row['itemdesc'].'<br>'; ?>
-		Item Price: <?php echo '$'.$row['price'].'<br>'; ?>
-        Seller: <?php echo "<a href='LINK'>".$row['username']."<br><br></a>"; ?>
+        <?php echo "<div id='login-container'>"; ?>
+            <?php echo "<img src='$row[imagepath]'  class='listing'>".'<br>'; ?>
+                <?php echo "<b><p class='signuptext' for='itemName'>Item Name: </b>" . htmlspecialchars($row['itemname']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . htmlspecialchars($row['price']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href='LINK'>" . htmlspecialchars($row['username']) . "</p>"; ?>
+        <?php echo "</div>" ?>
         </td>
 	</tr>
 	<?php endwhile; ?>

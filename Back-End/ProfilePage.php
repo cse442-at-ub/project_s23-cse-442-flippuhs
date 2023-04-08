@@ -67,19 +67,19 @@ else{
         </div>
         <div class="form-group">
             <label class="signuptext" for="firstName">First Name:</label>
-            <input type="text" name="firstName" id="firstName" value=<?php echo $firstName?>>
+            <input type="text" name="firstName" id="firstName" value="<?php echo htmlspecialchars($firstName)?>">
         </div>
         <div class="form-group">
             <label class="signuptext" for="lastName">Last Name:</label>
-            <input type="text" name="lastName" id="lastName" value=<?php echo $lastName?>>
+            <input type="text" name="lastName" id="lastName" value="<?php echo htmlspecialchars($lastName)?>">
         </div>
         <div class="form-group">
             <label class="signuptext" for="emailAddress">Email Address:</label></b>
-            <input type="text" name="email" id="emailAddress" placeholder=<?php echo $email?>>
+            <input type="text" name="email" id="emailAddress" placeholder="<?php echo htmlspecialchars($email)?>">
         </div>
         <div class="form-group">
             <label class="signuptext" for="zipcode">ZIP Code:</label>
-            <input type="text" name="zipcode" id="zipcode" value=<?php echo $zipcode?>>
+            <input type="text" name="zipcode" id="zipcode" value="<?php echo htmlspecialchars($zipcode)?>">
         </div>
         <div class="form-group">
             <label class="signuptext" for="fileToUpload">Select image to upload:</label>

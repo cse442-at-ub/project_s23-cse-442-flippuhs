@@ -113,6 +113,7 @@ class DBConn {
 
     function setupListingsTable() {
         $sql = "CREATE TABLE IF NOT EXISTS Listings (
+            itemid INT PRIMARY KEY AUTO_INCREMENT,
             itemname VARCHAR(2048) NOT NULL,
             itemdesc VARCHAR(2048) NOT NULL,
             price INT NOT NULL,
@@ -220,7 +221,34 @@ class DBConn {
         }
     }
 
+    function getNumUserListings() {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username = ?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                return $row["COUNT(*)"];
+            }
+        }
+        else{
+            return false;
+        }
+    }
 
+    function getUserListings($offset, $no_of_records_per_page) {
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ? LIMIT $offset, $no_of_records_per_page");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+    
     function insertUser($username,$firstname,$lastname,$email,$password,$zipcode){
         $stmt = $this->conn->prepare("INSERT INTO UsersTable (username, firstname, lastname, email, password, zipcode)
         VALUES (?,?,?,?,?,?)");
@@ -285,6 +313,25 @@ class DBConn {
         }
     }
 
+    function updateListing($itemID, $itemName, $itemDescription, $price) {
+        $stmt = $this->conn->prepare("UPDATE Listings SET itemname = COALESCE(NULLIF(?, ''), itemname), itemdesc = COALESCE(NULLIF(?, ''), itemdesc), price = COALESCE(NULLIF(?, ''), price) WHERE itemid = ? ");
+        $stmt->bind_param("sssi", $itemName, $itemDescription, $price, $itemID);
+        $stmt->execute();
+        $this->printToConsole($stmt->error);
+        return 0;
+    }
+
+    function updateListingPicPath($itemID, $target_file){
+        $stmt = $this->conn->prepare("UPDATE Listings SET imagepath=? WHERE itemid= ?");
+        $stmt->bind_param("si",$target_file,$itemID);
+        if($stmt->execute()==true){
+            $this->printToConsole("Updated listing image path");
+        }
+        else{
+            $this->printToConsole("Failed to update listing image path");
+        }
+    }
+
     function deleteUser() {
         $stmt = $this->conn->prepare("DELETE FROM UsersTable WHERE username= ?");
         $stmt->bind_param("s", $this->getUserFromCookie());
@@ -301,6 +348,25 @@ class DBConn {
         }
         else{
             $this->printToConsole("Failed to delete user from ProfilePic");
+        }
+        $stmt = $this->conn->prepare("DELETE FROM Listing WHERE username= ?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        if($stmt->execute()==true){
+            $this->printToConsole("Deleted user from Listings");
+        }
+        else{
+            $this->printToConsole("Failed to delete user from Listings");
+        }
+    }
+
+    function deleteListing($itemID) {
+        $stmt = $this->conn->prepare("DELETE FROM Listings WHERE itemid= ?");
+        $stmt->bind_param("i", $itemID);
+        if($stmt->execute()==true){
+            $this->printToConsole("Deleted item from Listings");
+        }
+        else{
+            $this->printToConsole("Failed to delete item from Listings");
         }
     }
    }
