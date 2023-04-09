@@ -38,7 +38,7 @@
 </head>
 <body>
     <nav class="navbar" style="background-color: #333;">
-        <div id="center" class="container-fluid">
+        <div class="container-fluid">
             <a class="navbar-brand" href="../Front-End/Homepage.php"><h1 id="logo">Flippuhs</h1></a>
             <div class="mx-auto">
                 <a class="navbarbutton" href="../Front-End/CreateListing.php">Create a Listing</a>
@@ -51,7 +51,7 @@
             </div>
             <div class="ms-auto">
                 <a href="../Back-End/ProfilePage.php">
-                    <img id="navbarpfp" src="<?php echo $pfpPath?>"/>
+                    <img id="navbarpfp" src="<?php echo htmlspecialchars($pfpPath)?>"/>
                 </a>
             </div>
         </div>

@@ -71,7 +71,7 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
 	<tr>
 		<td>
         <?php echo "<div id='login-container'>"; ?>
-            <?php echo "<img src='$row[imagepath]'  class='listing'>".'<br>'; ?>
+            <?php echo "<img src=" . htmlspecialchars($row['imagepath']) . " class='listing'>".'<br>'; ?>
                 <?php echo "<b><p class='signuptext' for='itemName'>Item Name: </b>" . htmlspecialchars($row['itemname']) . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>

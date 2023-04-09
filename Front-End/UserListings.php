@@ -88,16 +88,16 @@ $resData = $dbConn->getUserListings($offset,$no_of_records_per_page);
 	<tr>
 		<td>
         <?php echo "<form id='login-container' action='../Back-End/EditListing.php' method='post' enctype='multipart/form-data'>"; ?>
-            <?php echo "<img src='$row[imagepath]'  class='listing'>".'<br>'; ?>
+            <?php echo "<img src=" . htmlspecialchars($row['imagepath']) . " class='listing'>".'<br>'; ?>
             <?php echo "<div class='form-group'>"; ?>
                 <?php echo "<label class='signuptext' for='itemName'>Item Name:</label>"; ?>
-                <?php echo "<input type='text' name='itemName' id='itemName' value=" . '"' . htmlspecialchars($row['itemname']) . '">'; ?>
+                <?php echo "<input type='text' name='itemName' id='itemName' value=" . htmlspecialchars($row['itemname']) . ">"; ?>
 
                 <?php echo "<label class='signuptext' for='itemDescription'>Item Description:</label>"; ?>
-                <?php echo "<input type='text' name='itemDescription' id='itemDescription' value=" . '"' . htmlspecialchars($row['itemdesc']) . '">'; ?>
+                <?php echo "<input type='text' name='itemDescription' id='itemDescription' value=" . htmlspecialchars($row['itemdesc']) . ">"; ?>
 
                 <?php echo "<label class='signuptext' for='price'>Price:</label>"; ?>
-                <?php echo "<input type='text' name='price' id='price' value=" . '"' . htmlspecialchars($row['price']) . '">'; ?>
+                <?php echo "<input type='text' name='price' id='price' value=" . htmlspecialchars($row['price']) . ">"; ?>
 
                 <?php echo "<label class='signuptext' for='fileToUpload'>Select image to upload:</label>"; ?>
                 <?php echo "<input class='fileinput' type='file' name='fileToUpload' onchange='VerifyUploadSizeIsOK()' id='fileToUpload'>"; ?>

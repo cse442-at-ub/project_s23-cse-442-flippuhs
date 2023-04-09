@@ -15,6 +15,7 @@ $errors = array (
     6 => "A profile with this email has already been created.",
     7 => "This username is in use.",
     8 => "Password needs at least on uppercase letter.",
+    9 => "Username has to be alphanumeric (no special characters).",
 );
 
 $successMsg = "";

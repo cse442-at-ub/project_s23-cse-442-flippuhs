@@ -28,6 +28,11 @@ if (isset($_POST['userData'])) {
         $invalid = false;
     }
 
+    //Check if username is alphanumeric
+    if (!ctype_alnum($user)){
+        header("Location: ../Front-End/signup.php?error=9");
+        $invalid = false;
+    }
     //Password Checks
     //8 Characters
     if(strlen($pass) < 8){

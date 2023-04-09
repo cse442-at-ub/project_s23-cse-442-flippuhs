@@ -62,7 +62,7 @@ else{
 
     <form id="login-container" action="EditProfile.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <div style="text-align: center"><img id="pfp" src="<?php echo $pfpPath?>"/></div>
+            <div style="text-align: center"><img id="pfp" src="<?php echo htmlspecialchars($pfpPath)?>"/></div>
             <h1 id="logo">Profile Information</h1>
         </div>
         <div class="form-group">
