@@ -16,7 +16,11 @@ if (isset($_POST["editListing"])) {
     $price = $_POST['price'];
     $username = $dbConn->getUserFromCookie();
 
-    $updateStatus = $dbConn->updateListing($itemID, $itemName, $itemDescription, $price);
+    $updateStatus = $dbConn->updateListing($username, $itemID, $itemName, $itemDescription, $price);
+
+    if ($updateStatus == -1) {
+        header("Location: ../Front-End/UserListings.php?error=2&itemid=" . $itemID);
+    }
 
     $target_dir = "../resources/items/";
     $target_file = $target_dir . $username . "_" . basename($_FILES["fileToUpload"]["name"]);

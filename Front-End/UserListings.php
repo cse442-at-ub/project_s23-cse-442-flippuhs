@@ -10,13 +10,18 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 }
 
 $errors = array (
-    1 => "Image upload failed!"
+    1 => "Image upload failed!",
+    2 => "Item does not exist or belong to current user!",
 );
 
 $errorMsg = "";
 $itemErrorId = isset($_GET['itemid']) ? (int)$_GET['itemid'] : null;
 $errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
-if ($itemErrorId != null && $errorId != 0 && array_key_exists($errorId, $errors)) {
+if ($itemErrorId != null && $errorId == 2 && array_key_exists($errorId, $errors)) {
+    $errorMsg = $errors[$errorId];
+    echo '<script>alert("' . $errorMsg . '")</script>';
+}
+else if ($itemErrorId != null && $errorId != 0 && array_key_exists($errorId, $errors)) {
     $errorMsg = $errors[$errorId];
 }
 

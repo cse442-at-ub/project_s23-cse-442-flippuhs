@@ -42,7 +42,10 @@ class DBConn {
                 while($row = $result->fetch_assoc()) {
                     return $row["username"];
                 }
-            } 
+            }
+            else {
+                header("Location: ../Front-End/login.php");
+            }
         }
     }
 
@@ -249,6 +252,19 @@ class DBConn {
         }
     }
     
+    function getUserListingById($itemID) {
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ? AND itemid = ?");
+        $stmt->bind_param("si", $this->getUserFromCookie(), $itemID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
     function insertUser($username,$firstname,$lastname,$email,$password,$zipcode){
         $stmt = $this->conn->prepare("INSERT INTO UsersTable (username, firstname, lastname, email, password, zipcode)
         VALUES (?,?,?,?,?,?)");
@@ -313,12 +329,37 @@ class DBConn {
         }
     }
 
-    function updateListing($itemID, $itemName, $itemDescription, $price) {
-        $stmt = $this->conn->prepare("UPDATE Listings SET itemname = COALESCE(NULLIF(?, ''), itemname), itemdesc = COALESCE(NULLIF(?, ''), itemdesc), price = COALESCE(NULLIF(?, ''), price) WHERE itemid = ? ");
-        $stmt->bind_param("sssi", $itemName, $itemDescription, $price, $itemID);
-        $stmt->execute();
-        $this->printToConsole($stmt->error);
-        return 0;
+    function updateListing($username, $itemID, $itemName, $itemDescription, $price) {
+        $this->printToConsole($itemID);
+        $this->printToConsole($username);
+        $result = $this->getUserListingById($itemID);
+        if ($result->num_rows > 0) {
+            $curListing = null;
+            while($row = $result->fetch_assoc()) {
+                $curListing = $row;
+            }
+            if ($itemName == $curListing['itemname'] && $itemDescription == $curListing['itemdesc'] && $price == $curListing['price']) {
+                return 0;
+            }
+
+            $stmt = $this->conn->prepare("UPDATE Listings SET itemname = COALESCE(NULLIF(?, ''), itemname), itemdesc = COALESCE(NULLIF(?, ''), itemdesc), price = COALESCE(NULLIF(?, ''), price) WHERE itemid = ? AND username = ?");
+            $stmt->bind_param("sssis", $itemName, $itemDescription, $price, $itemID, $username);
+            $stmt->execute();
+            $rowsAffected = $stmt->affected_rows;
+
+            if($rowsAffected > 0){
+                $this->printToConsole("0");
+                return 0;
+            }
+            else {
+                $this->printToConsole("-1");
+                return -1;
+            }
+        }
+        else{
+            $this->printToConsole("-1");
+            return -1;
+        }  
     }
 
     function updateListingPicPath($itemID, $target_file){
