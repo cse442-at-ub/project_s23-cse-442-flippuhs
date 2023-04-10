@@ -1,4 +1,19 @@
 <?php
+$errors = array (
+    1 => "There was an error with your image, try again."
+);
+
+$successMsg = "";
+$errorMsg = "";
+
+$errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
+if ($errorId != 0 && array_key_exists($errorId, $errors)) {
+    $errorMsg = $errors[$errorId];
+}
+
+if(isset($_GET['success'])) {
+    $successMsg = "Success! Your listing has been created.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +46,8 @@
         <div class="form-group">
             <input class="navbarbutton2" style="width:100%; margin: 10px auto" type="submit" name="createListing" value="Confirm"></input>
         </div>
+        <p><span style="color:red"><?php echo $errorMsg ?></span></p>
+        <p><span style="color:green"><?php echo $successMsg ?></span></p>
     </form>
     <script type="text/javascript">
         function VerifyUploadSizeIsOK()

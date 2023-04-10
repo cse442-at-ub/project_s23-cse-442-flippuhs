@@ -51,22 +51,12 @@ if (isset($_POST['createListing'])) {
         }
     }
 
-    // if ($updateStatus == 0 && $image_success) {
-    //     header("Location: ProfilePage.php?success");
-    // } elseif ($updateStatus == 0 && !$image_chosen) {
-    //     header("Location: ProfilePage.php?success");
-    // } else {
-    //     if ($updateStatus != 0 && $image_success) {
-    //         header("Location: ProfilePage.php?error=1");
-    //     }
-    //     if ($updateStatus != 0 && !$image_chosen) {
-    //         header("Location: ProfilePage.php?error=1");
-    //     }
-    //     if ($updateStatus == 0 && $image_chosen && !$image_success) {
-    //         header("Location: ProfilePage.php?error=2");
-    //     }
-    // }
-    header("Location: ../Front-End/Homepage.php");
+    if ($image_success) {
+        header("Location: ../Front-End/CreateListing.php?success");
+    }
+    else {
+        header("Location: ../Front-End/CreateListing.php?error=1");
+    }
 }
 ?>
 
