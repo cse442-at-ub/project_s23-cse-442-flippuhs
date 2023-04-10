@@ -45,9 +45,11 @@ if (isset($_POST["editListing"])) {
             printToConsole("Sorry, your file was not uploaded.");
             // if everything is ok, try to upload file
         } else {
-            printToConsole($target_file);
-            $dbConn->updateListingPicPath($itemID, $target_file);
-            $image_success = true;
+            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                printToConsole($target_file);
+                $dbConn->updateListingPicPath($itemID, $target_file);
+                $image_success = true;
+            }
         }
     }
     if ($updateStatus == 0 && $image_success) {

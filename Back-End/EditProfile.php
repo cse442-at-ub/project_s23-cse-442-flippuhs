@@ -14,6 +14,7 @@ if (isset($_POST["editProfile"])) {
     $lastName = $_POST['lastName'];
     $email = $_POST['email'];
     $zipcode = $_POST['zipcode'];
+    $username = $dbConn->getUserFromCookie();
 
     $updateStatus = $dbConn->updateUserProfileInfo($firstName, $lastName, $email, $zipcode);
 
