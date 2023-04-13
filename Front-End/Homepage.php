@@ -3,10 +3,10 @@
 require_once('../Back-End/DBConn.php');
 
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
-    header('Location: '.
-    'https://'.
-    $_SERVER['SERVER_NAME'].
-    $_SERVER['PHP_SELF']);
+    //header('Location: '.
+    //'https://'.
+    //$_SERVER['SERVER_NAME'].
+   //// $_SERVER['PHP_SELF']);
 }
 
 $dbConn = new DBConn();
