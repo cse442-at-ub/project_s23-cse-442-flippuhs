@@ -26,6 +26,7 @@ class DBConn {
         $this->setupUsersTable();
         $this->setupProfilePicTable();
         $this->setupListingsTable();
+        $this->setupMessagesTable();
         return $this->conn;
     }
 
@@ -122,7 +123,21 @@ class DBConn {
             price INT NOT NULL,
             imagepath VARCHAR(2048) NOT NULL,
             username VARCHAR(512) NOT NULL,
-            status VARCHAR(50) NOT NULL
+            itemstatus VARCHAR(50) NOT NULL
+            )";
+
+        if ($this->conn->query($sql) === TRUE) {
+            $this->printToConsole("Table 'Listings' created successfully OR already exists");
+        } else {
+            $this->printToConsole("Error creating table: " . $this->conn->error);
+        }
+    }
+
+    function setupMessagesTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS Messages (
+            sender_username VARCHAR(50) NOT NULL,
+            receiver_username VARCHAR(50) NOT NULL,
+            content VARCHAR(512) NOT NULL,
             )";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -179,6 +194,22 @@ class DBConn {
         }
     }
 
+    function getUserMessage($sender_username, $receiver_username) {
+        $stmt = $this->conn->prepare("SELECT content FROM Messages WHERE sender_username = $sender_username AND reciever_username = $receiver_username ");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                return $row["password"];
+            }
+        } 
+        else {
+            $this->printToConsole("No such user found!");
+        }
+    }
+
     function getProfilePicPathExists() {
         $stmt = $this->conn->prepare("SELECT path FROM ProfilePic WHERE username= ?");
         $stmt->bind_param("s", $this->getUserFromCookie());
@@ -195,7 +226,7 @@ class DBConn {
     }
 
     function getNumListingsForSale() {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND status=?");
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND itemstatus=?");
         $forsale = "For sale";
         $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
@@ -211,7 +242,7 @@ class DBConn {
     }
 
     function getListingsForSale($offset, $no_of_records_per_page) {
-        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND status=? LIMIT $offset, $no_of_records_per_page");
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? LIMIT $offset, $no_of_records_per_page");
         $forsale = "For sale";
         $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
@@ -277,6 +308,7 @@ class DBConn {
         }
     }
 
+
     function insertUserProfilePicPath($target_file){
         $stmt = $this->conn->prepare("INSERT INTO ProfilePic (username, path) VALUES (?,?)");
         $stmt->bind_param("ss",$this->getUserFromCookie(),$target_file);
@@ -289,7 +321,7 @@ class DBConn {
     }
 
     function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username){
-        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, status) VALUES (?,?,?,?,?,?)");
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus) VALUES (?,?,?,?,?,?)");
         $forsale = "For sale";
         $stmt->bind_param("ssisss",$itemname, $itemdesc, $price, $imagepath, $username,$forsale);
         if($stmt->execute()==true){
@@ -297,6 +329,18 @@ class DBConn {
         }
         else{
             $this->printToConsole("Failed to insert new listing");
+        }
+    }
+
+    function insertMessage($sender_username,$receiver_username,$content){
+        $stmt = $this->conn->prepare("INSERT INTO Messages (sender_username, receiver_username, content)
+        VALUES (?,?,?)");
+        $stmt->bind_param("sss",$sender_username,$receiver_username,$content);
+        if($stmt->execute()==true){
+            $this->printToConsole("Inserted new Message");
+        }
+        else{
+            $this->printToConsole("Failed to insert new Message");
         }
     }
 

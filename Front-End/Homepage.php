@@ -86,11 +86,13 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
 </table>
 <button class="openChatBtn" onclick="openForm()">Messages</button>
 <div class="openChat">
-    <form id="login-container">
+    <form id="login-container" action="../Back-End/Message.php" method="post" enctype="multipart/form-data">
         <h1>Chat</h1>
+        <label for ="user"><b>User</b></label?>
+        <textarea placeholder="Select User" name="receiver_username" required></textarea>
         <label for="msg"><b>Message</b></label>
-        <textarea placeholder="Type message.." name="msg" required></textarea>
-        <button type="submit" class="navbarbutton2">Send</button>
+        <textarea placeholder="Type message.." name="content" required></textarea>
+        <button type="submit" class="navbarbutton2" name="sendMessage">Send</button>
         <button type="button" class="navbarbutton1" onclick="closeForm()">
         Close
         </button>
