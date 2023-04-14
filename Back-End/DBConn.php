@@ -122,7 +122,7 @@ class DBConn {
             price INT NOT NULL,
             imagepath VARCHAR(2048) NOT NULL,
             username VARCHAR(512) NOT NULL,
-            status VARCHAR(50) NOT NULL
+            itemstatus VARCHAR(50) NOT NULL
             )";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -195,7 +195,7 @@ class DBConn {
     }
 
     function getNumListingsForSale() {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND status=?");
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND itemstatus=?");
         $forsale = "For sale";
         $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
@@ -211,7 +211,7 @@ class DBConn {
     }
 
     function getListingsForSale($offset, $no_of_records_per_page) {
-        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND status=? LIMIT $offset, $no_of_records_per_page");
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? LIMIT $offset, $no_of_records_per_page");
         $forsale = "For sale";
         $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
@@ -289,7 +289,7 @@ class DBConn {
     }
 
     function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username){
-        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, status) VALUES (?,?,?,?,?,?)");
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus) VALUES (?,?,?,?,?,?)");
         $forsale = "For sale";
         $stmt->bind_param("ssisss",$itemname, $itemdesc, $price, $imagepath, $username,$forsale);
         if($stmt->execute()==true){
@@ -329,35 +329,36 @@ class DBConn {
         }
     }
 
-    function updateListing($username, $itemID, $itemName, $itemDescription, $price) {
-        $this->printToConsole($itemID);
-        $this->printToConsole($username);
+    function updateListing($username, $itemID, $itemName, $itemDescription, $price, $itemstatus) {
+        if ($price < 0 || $price > 2147483647) {
+            return -2;        
+        }
+        if ($itemstatus != "For sale" && $itemstatus != "Sold") {
+            return -2;
+        }
         $result = $this->getUserListingById($itemID);
         if ($result->num_rows > 0) {
             $curListing = null;
             while($row = $result->fetch_assoc()) {
                 $curListing = $row;
             }
-            if ($itemName == $curListing['itemname'] && $itemDescription == $curListing['itemdesc'] && $price == $curListing['price']) {
+            if ($itemName == $curListing['itemname'] && $itemDescription == $curListing['itemdesc'] && $price == $curListing['price'] && $itemstatus == $curListing['itemstatus']) {
                 return 0;
             }
 
-            $stmt = $this->conn->prepare("UPDATE Listings SET itemname = COALESCE(NULLIF(?, ''), itemname), itemdesc = COALESCE(NULLIF(?, ''), itemdesc), price = COALESCE(NULLIF(?, ''), price) WHERE itemid = ? AND username = ?");
-            $stmt->bind_param("sssis", $itemName, $itemDescription, $price, $itemID, $username);
+            $stmt = $this->conn->prepare("UPDATE Listings SET itemname = COALESCE(NULLIF(?, ''), itemname), itemdesc = COALESCE(NULLIF(?, ''), itemdesc), price = COALESCE(NULLIF(?, ''), price), itemstatus = COALESCE(NULLIF(?, ''), itemstatus) WHERE itemid = ? AND username = ?");
+            $stmt->bind_param("ssssis", $itemName, $itemDescription, $price, $itemstatus, $itemID, $username);
             $stmt->execute();
             $rowsAffected = $stmt->affected_rows;
 
             if($rowsAffected > 0){
-                $this->printToConsole("0");
                 return 0;
             }
             else {
-                $this->printToConsole("-1");
                 return -1;
             }
         }
         else{
-            $this->printToConsole("-1");
             return -1;
         }  
     }

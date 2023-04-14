@@ -14,9 +14,14 @@ if (isset($_POST["editListing"])) {
     $itemName = $_POST['itemName'];
     $itemDescription = $_POST['itemDescription'];
     $price = $_POST['price'];
+    $itemstatus = $_POST['itemstatus'];
     $username = $dbConn->getUserFromCookie();
 
-    $updateStatus = $dbConn->updateListing($username, $itemID, $itemName, $itemDescription, $price);
+    $updateStatus = $dbConn->updateListing($username, $itemID, $itemName, $itemDescription, $price, $itemstatus);
+
+    if ($updateStatus == -2) {
+        header("Location: ../Front-End/UserListings.php?error=3&itemid=" . $itemID);
+    }
 
     if ($updateStatus == -1) {
         header("Location: ../Front-End/UserListings.php?error=2&itemid=" . $itemID);

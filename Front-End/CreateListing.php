@@ -1,6 +1,7 @@
 <?php
 $errors = array (
-    1 => "There was an error with your image, try again."
+    1 => "There was an error with your image, try again.",
+    2 => "Invalid value(s) entered!"
 );
 
 $successMsg = "";
@@ -36,7 +37,7 @@ if(isset($_GET['success'])) {
         </div>
         <div class="form-group">
             <label class="signuptext"for="itemPrice">Item Price $:</label>
-            <input type="number" name="item_price" id="itemPrice"maxlength="12" required="required" step="1"
+            <input type="number" name="item_price" id="itemPrice" maxlength="12" required="required" step="1" min="0" max="2147483647"
                 placeholder="0"/>
         </div>
         <div class="form-group">

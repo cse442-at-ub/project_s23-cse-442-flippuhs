@@ -12,6 +12,7 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 $errors = array (
     1 => "Image upload failed!",
     2 => "Item does not exist or belong to current user!",
+    3 => "Invalid value(s) entered!"
 );
 
 $errorMsg = "";
@@ -93,16 +94,31 @@ $resData = $dbConn->getUserListings($offset,$no_of_records_per_page);
 	<tr>
 		<td>
         <?php echo "<form id='login-container' action='../Back-End/EditListing.php' method='post' enctype='multipart/form-data'>"; ?>
-            <?php echo "<img src=" . htmlspecialchars($row['imagepath']) . " class='listing'>".'<br>'; ?>
+            <?php echo "<img src=" . '"' . htmlspecialchars($row['imagepath']) . '"' . " class='listing'>".'<br>'; ?>
             <?php echo "<div class='form-group'>"; ?>
                 <?php echo "<label class='signuptext' for='itemName'>Item Name:</label>"; ?>
-                <?php echo "<input type='text' name='itemName' id='itemName' value=" . htmlspecialchars($row['itemname']) . ">"; ?>
+                <?php echo "<input type='text' name='itemName' id='itemName' value=" . '"' . htmlspecialchars($row['itemname']) . '"'. ">"; ?>
 
                 <?php echo "<label class='signuptext' for='itemDescription'>Item Description:</label>"; ?>
-                <?php echo "<input type='text' name='itemDescription' id='itemDescription' value=" . htmlspecialchars($row['itemdesc']) . ">"; ?>
+                <?php echo "<input type='text' name='itemDescription' id='itemDescription' value=" . '"' . htmlspecialchars($row['itemdesc']) . '"' . ">"; ?>
 
                 <?php echo "<label class='signuptext' for='price'>Price:</label>"; ?>
-                <?php echo "<input type='text' name='price' id='price' value=" . htmlspecialchars($row['price']) . ">"; ?>
+                <?php echo "<input type='number' min='0' max='2147483647' name='price' id='price' value=" . '"' . htmlspecialchars($row['price']) . '"' . ">"; ?>
+
+                <?php echo "<label class='signuptext' for='itemstatus'>Item itemstatus:</label>"; ?>
+                <?php echo "<select name='itemstatus' id='itemstatus'>" ?>
+                    <?php echo "<option value=" . '"' . htmlspecialchars($row['itemstatus']) . '"' . ">" . htmlspecialchars($row['itemstatus']) . "</option>"; ?>
+                    <?php 
+                        if ($row['itemstatus'] == "For sale") {
+                            echo "<option value='Sold'>Sold</option>";
+                        }
+                        else {
+                            echo "<option value='For sale'>For sale</option>";
+                        }
+                    ?>                                
+                <?php echo "</select>" ?>
+
+                <?php echo "<input type='checkbox' name='itemstatus' id='itemstatus' value=" . '"' . htmlspecialchars($row['itemstatus']) . '"' . ">"; ?>
 
                 <?php echo "<label class='signuptext' for='fileToUpload'>Select image to upload:</label>"; ?>
                 <?php echo "<input class='fileinput' type='file' name='fileToUpload' onchange='VerifyUploadSizeIsOK()' id='fileToUpload'>"; ?>
