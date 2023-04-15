@@ -1,4 +1,8 @@
 <?php
+require_once("../Back-End/CSRF.php");
+
+$token = CSRF::generateToken();
+
 $errors = array (
     1 => "There was an error with your image, try again.",
     2 => "Invalid value(s) entered!"
@@ -47,6 +51,7 @@ if(isset($_GET['success'])) {
         <div class="form-group">
             <input class="navbarbutton2" style="width:100%; margin: 10px auto" type="submit" name="createListing" value="Confirm"></input>
         </div>
+        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
         <p><span style="color:red"><?php echo $errorMsg ?></span></p>
         <p><span style="color:green"><?php echo $successMsg ?></span></p>
     </form>

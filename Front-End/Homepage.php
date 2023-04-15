@@ -1,6 +1,8 @@
 <?php
-
 require_once('../Back-End/DBConn.php');
+require_once("../Back-End/CSRF.php");
+
+$token = CSRF::generateToken();
 
 /*
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
@@ -100,6 +102,7 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
         <button type="button" class="navbarbutton1" onclick="closeForm()">
         Close
         </button>
+        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
     </form>
 </div>
 <script>

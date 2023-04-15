@@ -1,5 +1,8 @@
 <?php
 require_once("DBConn.php");
+require_once("CSRF.php");
+
+$token = CSRF::generateToken();
 
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
@@ -90,6 +93,7 @@ else{
             <p><span style="color:red"><?php echo $errorMsg ?></span></p>
             <p><span style="color:green"><?php echo $successMsg ?></span></p>
         </div>
+        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
         <div class="form-group">
             <input class="navbarbutton2" style="width:100%; margin: 10px auto" type="submit" name="editProfile" value="Confirm"></input>
             <input class="navbarbutton1" style="width:100%; margin: 10px auto" type="submit" name="deleteAccount" value="Delete Account"/>

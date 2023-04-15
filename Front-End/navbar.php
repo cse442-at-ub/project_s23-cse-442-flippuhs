@@ -1,6 +1,8 @@
 <?php
+    require_once('../Back-End/DBConn.php');    
+    require_once("../Back-End/CSRF.php");
     
-    require_once('../Back-End/DBConn.php');
+    $token = CSRF::generateToken();
 
     if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
         header('Location: '.
@@ -48,6 +50,7 @@
             <div class="ms-auto">
                 <form action="../Back-End/Login.php" method="POST">
                     <input class="logoutbutton" type="submit" name="logout" value="Logout"/>
+                    <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                 </form>
             </div>
             <div class="ms-auto">
