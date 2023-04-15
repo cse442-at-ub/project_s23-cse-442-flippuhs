@@ -13,7 +13,7 @@ if($dbConn->getUserInfoByUsername($seller)!=false){
     $last = $userInfo->getLastName();
     $email1 = $userInfo->getEmail();
     $zip = $userInfo->getZipcode();
-    $pfp = $dbconn->getProfilePicByUsername($seller);
+    $pfp = $dbConn->getProfilePicByUsername($seller);
     if($pfp!=false){
         $pfp = $dbConn->getProfilePicByUsername($seller);
     }
@@ -28,6 +28,20 @@ if($dbConn->getNumListingsByUsername($seller) != false){
 else{ 
     $numListings = 0;
 }
+
+if (isset($_GET['pageno'])) {
+    $pageno = $_GET['pageno'];
+} else {
+    $pageno = 1;
+}
+
+$no_of_records_per_page = 2;
+$offset = ($pageno-1) * $no_of_records_per_page; 
+
+$total_rows = $numListings;
+$total_pages = ceil($total_rows / $no_of_records_per_page);
+
+$resData = $dbConn->getSellerListings($seller,$offset,$no_of_records_per_page);
 
 ?>
 
@@ -48,6 +62,34 @@ else{
 <h2 style="text-align: center" id="logo">Email: <?php echo htmlspecialchars($email1)?></h2>
 <h2 style="text-align: center" id="logo">Zipcode: <?php echo htmlspecialchars($zip)?></h2>
 <h2 style="text-align: center" id="logo">Number of Listings: <?php echo htmlspecialchars($numListings)?></h2>
+<ul class="pagination">
+    <li><a class='logoutbutton' href=<?php echo "?sellername=".$seller."&"."pageno=1"?>>First</a></li>
+    <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">
+        <a class='logoutbutton' href="<?php if($pageno <= 1){ echo '#'; } else { echo "?sellername=".$seller."&"."pageno=".($pageno - 1); } ?>">Prev</a>
+    </li>
+    <li class="<?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
+        <a class='logoutbutton' href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo "?sellername=".$seller."&"."pageno=".($pageno + 1); } ?>">Next</a>
+    </li>
+    <li><a class='logoutbutton' href=<?php echo "?sellername=".$seller."&"."pageno=".$total_pages; ?>>Last</a></li>
+</ul>
+<table style='width:80%'>
+	<?php if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
+	<tr>
+		<td>
+        <?php echo "<div id='login-container'>"; ?>
+            <?php echo "<img src=" . htmlspecialchars($row['imagepath']) . " class='listing'>".'<br>'; ?>
+                <?php echo "<b><p class='signuptext' for='itemName'>Item Name: </b>" . htmlspecialchars($row['itemname']) . "</p>"; ?>
 
+                <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . htmlspecialchars($row['price']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . htmlspecialchars($row['itemstatus']) . "</p>"; ?>
+                
+        <?php echo "</div>" ?>
+        </td>
+	</tr>
+	<?php endwhile; ?>
+</table>
 </body>
 </html>

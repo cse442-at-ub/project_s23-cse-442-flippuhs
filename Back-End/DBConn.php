@@ -224,6 +224,20 @@ class DBConn {
         }
     }
 
+    function getSellerListings($sellerName,$offset, $no_of_records_per_page) {
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ? LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $stmt->bind_param("s",$sellerName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
     function getNumUserListings() {
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username = ?");
         $stmt->bind_param("s", $this->getUserFromCookie());
