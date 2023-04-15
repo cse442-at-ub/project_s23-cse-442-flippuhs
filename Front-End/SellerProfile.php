@@ -4,10 +4,13 @@ require_once('../Back-End/DBConn.php');
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
-//DELETE
 
+$seller = $_GET['sellername'];
 
-$seller = $_GET['username'];
+$firstName = "tyler";
+$lastName;
+$email;
+$zipcode;
 
 if($dbConn->getUserInfoByUsername($seller)!=false){
     $userInfo = $dbConn->getUserInfoByUsername($seller);
@@ -16,6 +19,8 @@ if($dbConn->getUserInfoByUsername($seller)!=false){
     $email = $userInfo->getEmail();
     $zipcode = $userInfo->getZipcode();
     $pfpPath = "../resources/pfp/defaultPFP.jpg";
+
+    echo $firstName;
 }
 
 if($dbConn->getNumListingsByUsername($seller) != false){
@@ -36,7 +41,7 @@ else{
 
 <body>
 <?php include '../Front-End/navbar.php';?>
-<?php $seller = $_GET['username']; ?>
+<?php $seller = $_GET['sellername']; ?>
 
 <h1></h1>
 <div style="text-align: center"><img id="pfp" src="<?php echo htmlspecialchars($pfpPath)?>"/></div>
