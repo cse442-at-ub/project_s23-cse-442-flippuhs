@@ -218,7 +218,7 @@ class DBConn {
             return $result;
         } 
         else {
-            $this->printToConsole("No such Message found!");
+            return false;
         }
     }
 

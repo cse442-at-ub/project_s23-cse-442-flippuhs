@@ -309,3 +309,22 @@ body {
    .messagetextarea {
     width: 100%;
   }
+
+  .messageSellerButton {
+    background-color: gold;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    border: 8px solid gold;
+    border-radius: 10px;
+    margin-top: 25%;
+    width: max-content;
+  }
+  
+  .center {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }

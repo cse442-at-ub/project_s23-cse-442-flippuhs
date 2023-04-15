@@ -62,6 +62,10 @@ $resData = $dbConn->getSellerListings($seller,$offset,$no_of_records_per_page);
 <h2 style="text-align: center" id="logo">Email: <?php echo htmlspecialchars($email1)?></h2>
 <h2 style="text-align: center" id="logo">Zipcode: <?php echo htmlspecialchars($zip)?></h2>
 <h2 style="text-align: center" id="logo">Number of Listings: <?php echo htmlspecialchars($numListings)?></h2>
+<br><br>
+<div class="center">
+    <a class='messageSellerButton' href=<?php echo '../Front-End/messages.php?'.$seller?>>Message Seller</a>
+</div>
 <ul class="pagination">
     <li><a class='logoutbutton' href=<?php echo "?sellername=".$seller."&"."pageno=1"?>>First</a></li>
     <li class="<?php if($pageno <= 1){ echo 'disabled'; } ?>">

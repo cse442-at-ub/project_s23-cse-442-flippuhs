@@ -4,14 +4,14 @@ require_once("../Back-End/CSRF.php");
 
 $token = CSRF::generateToken();
 
-/*
+
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
-    //header('Location: '.
-    //'https://'.
-    //$_SERVER['SERVER_NAME'].
-   //// $_SERVER['PHP_SELF']);
+    header('Location: '.
+    'https://'.
+    $_SERVER['SERVER_NAME'].
+    $_SERVER['PHP_SELF']);
 }
-*/
+
 
 $dbConn = new DBConn();
 $conn = $dbConn->connect();

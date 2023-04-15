@@ -1,5 +1,6 @@
 <?php
 require_once('../Back-End/DBConn.php');
+require_once("../Back-End/CSRF.php");
 
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
@@ -7,6 +8,8 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     $_SERVER['SERVER_NAME'].
     $_SERVER['PHP_SELF']);
 }
+
+$token = CSRF::generateToken();
 
 $errors = array (
     1 => "Can't send message to yourself.",
@@ -70,10 +73,11 @@ while($curRow = $usersMessaged->fetch_assoc()){
     </div>
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
     <br>
+    <?php echo '<h2>Conversation with: '.$query.'</h2>'?>
     <tr>
         <td>
         <?php
-            if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['QUERY_STRING']!="" && $errorMsg=="") {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['QUERY_STRING']!="" && $errorMsg=="" && $resData!=false) {
                 while ($row = $resData->fetch_assoc()): 
                     if($row["sender_username"]!=$user){
                         echo $row["sender_username"].": ".htmlspecialchars($row["content"])."<br>";
@@ -94,13 +98,14 @@ while($curRow = $usersMessaged->fetch_assoc()){
         }
         else{
             echo '<h1>Chat</h1>
-            <label for ="user"><b>User</b></label?>
+            <label for ="user"><b>User</b></label>
             <textarea class="messagetextarea" placeholder="Select User" name="receiver_username" required></textarea>
             <label for="msg"><b>Message</b></label>
             <textarea class="messagetextarea" placeholder="Type message.." name="content" required></textarea>
             <button type="submit" class="navbarbutton2" name="sendMessage">Send</button>';
         }
         ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
     </form>
     <script>
         function myFunction() {

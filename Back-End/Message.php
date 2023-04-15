@@ -1,50 +1,56 @@
 <?php
 require_once("DBConn.php");
+require_once("CSRF.php");
 
 session_start();
 
-if (isset($_POST['sendMessage'])) {
-    $dbConn = new DBConn();
-    $conn = $dbConn->connect();
-
-    $sender_username = $dbConn->getUserFromCookie();
-
-    $receiver_username = $_POST['receiver_username'];
-    $content = $_POST['content'];
-
-    if(strlen($content) <= 512 && $receiver_username != $sender_username){
-        if($dbConn->getUserExists($receiver_username) == true){ // check to make sure they dont message themselves and that the user to message exists
-            $dbConn->insertMessage($sender_username, $receiver_username, $content);
-            header("Location: ../Front-End/messages.php?".$receiver_username);
-        }
-        else{
-            header("Location: ../Front-End/messages.php?error=2");
-        }
-    }
-    else{
-        header("Location: ../Front-End/messages.php?error=1");
-    }
+if (!CSRF::verifyToken($_POST['csrf_token'])) {
+    header("Location: ../Front-End/login.php");
 }
+else{
+    if (isset($_POST['sendMessage'])) {
+        $dbConn = new DBConn();
+        $conn = $dbConn->connect();
 
-if (isset($_POST['sendMessageToUser'])) {
-    $dbConn = new DBConn();
-    $conn = $dbConn->connect();
+        $sender_username = $dbConn->getUserFromCookie();
 
-    $sender_username = $dbConn->getUserFromCookie();
+        $receiver_username = $_POST['receiver_username'];
+        $content = $_POST['content'];
 
-    $receiver_username = $_SESSION["messageUser"];
-    $content = $_POST['content'];
-
-    if(strlen($content) <= 512 && $receiver_username != $sender_username){
-        if($dbConn->getUserExists($receiver_username) == true){ // check to make sure they dont message themselves and that the user to message exists
-            $dbConn->insertMessage($sender_username, $receiver_username, $content);
-            header("Location: ../Front-End/messages.php?".$receiver_username);
+        if(strlen($content) <= 512 && $receiver_username != $sender_username){
+            if($dbConn->getUserExists($receiver_username) == true){ // check to make sure they dont message themselves and that the user to message exists
+                $dbConn->insertMessage($sender_username, $receiver_username, $content);
+                header("Location: ../Front-End/messages.php?".$receiver_username);
+            }
+            else{
+                header("Location: ../Front-End/messages.php?error=2");
+            }
         }
         else{
-            header("Location: ../Front-End/messages.php?error=2");
+            header("Location: ../Front-End/messages.php?error=1");
         }
     }
-    else{
-        header("Location: ../Front-End/messages.php?error=1");
+
+    if (isset($_POST['sendMessageToUser'])) {
+        $dbConn = new DBConn();
+        $conn = $dbConn->connect();
+
+        $sender_username = $dbConn->getUserFromCookie();
+
+        $receiver_username = $_SESSION["messageUser"];
+        $content = $_POST['content'];
+
+        if(strlen($content) <= 512 && $receiver_username != $sender_username){
+            if($dbConn->getUserExists($receiver_username) == true){ // check to make sure they dont message themselves and that the user to message exists
+                $dbConn->insertMessage($sender_username, $receiver_username, $content);
+                header("Location: ../Front-End/messages.php?".$receiver_username);
+            }
+            else{
+                header("Location: ../Front-End/messages.php?error=2");
+            }
+        }
+        else{
+            header("Location: ../Front-End/messages.php?error=1");
+        }
     }
 }
