@@ -1,4 +1,8 @@
 <?php
+require_once("../Back-End/CSRF.php");
+
+$token = CSRF::generateToken();
+
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
     'https://'.
@@ -43,6 +47,7 @@ if ($errorId != 0 && array_key_exists($errorId, $errors)) {
     </p>
 
     <a href="../Front-End/signup.php"> Don't have an account? Sign up.</a>
+    <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
     <p><span style="color:red"><?php echo $errorMsg ?></span></p>
 </form>
 

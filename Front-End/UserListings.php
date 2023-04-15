@@ -1,6 +1,8 @@
 <?php
-
 require_once('../Back-End/DBConn.php');
+require_once("../Back-End/CSRF.php");
+
+$token = CSRF::generateToken();
 
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
@@ -134,7 +136,7 @@ $resData = $dbConn->getUserListings($offset,$no_of_records_per_page);
                         echo "<p><span style='color:green'>$successMsg</span></p>"; 
                     }
                 ?>
-
+                <?php echo "<input type='hidden' name='csrf_token' value=" . '"' . $token . '"' . ">" ?>
                 <?php echo "<input class='navbarbutton2' style='width:100%; margin: 10px auto' type='submit' name='editListing' value='Update'></input>"; ?>
                 <?php echo "<input class='navbarbutton1' style='width:100%; margin: 10px auto' type='submit' name='deleteListing' value='Delete Listing'/>"; ?>
             <?php echo "</div>" ?>
