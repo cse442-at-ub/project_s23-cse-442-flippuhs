@@ -122,7 +122,7 @@ class DBConn {
             price INT NOT NULL,
             imagepath VARCHAR(2048) NOT NULL,
             username VARCHAR(512) NOT NULL,
-            status VARCHAR(50) NOT NULL
+            itemstatus VARCHAR(50) NOT NULL
             )";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -195,7 +195,7 @@ class DBConn {
     }
 
     function getNumListingsForSale() {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND status=?");
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND itemstatus=?");
         $forsale = "For sale";
         $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
@@ -211,7 +211,7 @@ class DBConn {
     }
 
     function getListingsForSale($offset, $no_of_records_per_page) {
-        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND status=? LIMIT $offset, $no_of_records_per_page");
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? LIMIT $offset, $no_of_records_per_page");
         $forsale = "For sale";
         $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
         $stmt->execute();
@@ -251,7 +251,51 @@ class DBConn {
             return false;
         }
     }
-    
+    //Josh
+    function getNumListingsByUsername($sellerName){
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username = ?");
+        $stmt->bind_param("s", $this->$sellerName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                return $row["COUNT(*)"];
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getUserInfoByUsername($sellerName){
+        $stmt = $this->conn->prepare("SELECT firstname, lastname, email, zipcode FROM UsersTable WHERE username = ? ");
+        $stmt->bind_param("s", $this->$sellerName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                return new User($row["firstname"],$row["lastname"],$row["email"],$row["zipcode"]);
+            }
+        } 
+        else {
+            $this->printToConsole("No such user found!");
+            return false;
+        }
+    }
+
+    function getUserListingsByUsername($sellerName){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ?");
+        $stmt->bind_param("s", $this->$sellerName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+    //Josh 
     function getUserListingById($itemID) {
         $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ? AND itemid = ?");
         $stmt->bind_param("si", $this->getUserFromCookie(), $itemID);
@@ -289,7 +333,7 @@ class DBConn {
     }
 
     function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username){
-        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, status) VALUES (?,?,?,?,?,?)");
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus) VALUES (?,?,?,?,?,?)");
         $forsale = "For sale";
         $stmt->bind_param("ssisss",$itemname, $itemdesc, $price, $imagepath, $username,$forsale);
         if($stmt->execute()==true){
