@@ -58,7 +58,7 @@ $resData = $dbConn->getSellerListings($seller,$offset,$no_of_records_per_page);
 <h1></h1>
 <div style="text-align: center"><img id="pfp" src="<?php echo htmlspecialchars($pfp)?>"/></div>
 <h1 style="text-align: center" id="logo"><?php echo htmlspecialchars($seller)?></h1>
-<h2 style="text-align: center" id="logo">Name: <?php echo htmlspecialchars($first)?> <?php echo htmlspecialchars($lastName)?></h2>
+<h2 style="text-align: center" id="logo">Name: <?php echo htmlspecialchars($first)?> <?php echo htmlspecialchars($last)?></h2>
 <h2 style="text-align: center" id="logo">Email: <?php echo htmlspecialchars($email1)?></h2>
 <h2 style="text-align: center" id="logo">Zipcode: <?php echo htmlspecialchars($zip)?></h2>
 <h2 style="text-align: center" id="logo">Number of Listings: <?php echo htmlspecialchars($numListings)?></h2>
