@@ -5,21 +5,7 @@ $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
 //DELETE
-if($dbConn->getUserProfileInfo()!=false){
-    //check that usernameCookie exists or else redirect to login page
-    $userInfo = $dbConn->getUserProfileInfo();
-    $firstName = $userInfo->getFirstName();
-    $lastName = $userInfo->getLastName();
-    $email = $userInfo->getEmail();
-    $zipcode = $userInfo->getZipcode();
-    $pfpPath = $dbConn->getProfilePicPathExists();
-    if($pfpPath!=false){
-        $pfpPath = $dbConn->getProfilePicPathExists();
-    }
-    else{
-        $pfpPath = "../resources/pfp/defaultPFP.jpg";
-    }
-}
+
 
 $seller = $_GET['username'];
 

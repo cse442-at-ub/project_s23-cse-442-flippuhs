@@ -254,7 +254,7 @@ class DBConn {
     //Josh
     function getNumListingsByUsername($sellerName){
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username = ?");
-        $stmt->bind_param("s", $this->$sellerName);
+        $stmt->bind_param("s", $sellerName);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -269,7 +269,7 @@ class DBConn {
 
     function getUserInfoByUsername($sellerName){
         $stmt = $this->conn->prepare("SELECT firstname, lastname, email, zipcode FROM UsersTable WHERE username = ? ");
-        $stmt->bind_param("s", $this->$sellerName);
+        $stmt->bind_param("s", $sellerName);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -285,7 +285,7 @@ class DBConn {
 
     function getUserListingsByUsername($sellerName){
         $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ?");
-        $stmt->bind_param("s", $this->$sellerName);
+        $stmt->bind_param("s", $sellerName);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
