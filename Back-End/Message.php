@@ -15,7 +15,7 @@ if (isset($_POST['sendMessage'])) {
     if(strlen($content) <= 512 && $receiver_username != $sender_username){
         if($dbConn->getUserExists($receiver_username) == true){ // check to make sure they dont message themselves and that the user to message exists
             $dbConn->insertMessage($sender_username, $receiver_username, $content);
-            header("Location: ../Front-End/messages.php");
+            header("Location: ../Front-End/messages.php?".$receiver_username);
         }
         else{
             header("Location: ../Front-End/messages.php?error=2");
