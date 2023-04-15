@@ -7,20 +7,19 @@ $conn = $dbConn->connect();
 
 $seller = $_GET['sellername'];
 
-$firstName = "tyler";
-$lastName;
-$email;
-$zipcode;
-
 if($dbConn->getUserInfoByUsername($seller)!=false){
     $userInfo = $dbConn->getUserInfoByUsername($seller);
-    $firstName = $userInfo->getFirstName();
-    $lastName = $userInfo->getLastName();
-    $email = $userInfo->getEmail();
-    $zipcode = $userInfo->getZipcode();
-    $pfpPath = "../resources/pfp/defaultPFP.jpg";
-
-    echo $firstName;
+    $first = $userInfo->getFirstName();
+    $last = $userInfo->getLastName();
+    $email1 = $userInfo->getEmail();
+    $zip = $userInfo->getZipcode();
+    $pfp = $dbconn->getProfilePicByUsername($seller);
+    if($pfp!=false){
+        $pfp = $dbConn->getProfilePicByUsername($seller);
+    }
+    else{
+        $pfp = "../resources/pfp/defaultPFP.jpg";
+    }
 }
 
 if($dbConn->getNumListingsByUsername($seller) != false){
@@ -41,14 +40,13 @@ else{
 
 <body>
 <?php include '../Front-End/navbar.php';?>
-<?php $seller = $_GET['sellername']; ?>
 
 <h1></h1>
-<div style="text-align: center"><img id="pfp" src="<?php echo htmlspecialchars($pfpPath)?>"/></div>
+<div style="text-align: center"><img id="pfp" src="<?php echo htmlspecialchars($pfp)?>"/></div>
 <h1 style="text-align: center" id="logo"><?php echo htmlspecialchars($seller)?></h1>
-<h2 style="text-align: center" id="logo">Name: <?php echo htmlspecialchars($firstName)?> <?php echo htmlspecialchars($lastName)?></h2>
-<h2 style="text-align: center" id="logo">Email: <?php echo htmlspecialchars($email)?></h2>
-<h2 style="text-align: center" id="logo">Zipcode: <?php echo htmlspecialchars($zipcode)?></h2>
+<h2 style="text-align: center" id="logo">Name: <?php echo htmlspecialchars($first)?> <?php echo htmlspecialchars($lastName)?></h2>
+<h2 style="text-align: center" id="logo">Email: <?php echo htmlspecialchars($email1)?></h2>
+<h2 style="text-align: center" id="logo">Zipcode: <?php echo htmlspecialchars($zip)?></h2>
 <h2 style="text-align: center" id="logo">Number of Listings: <?php echo htmlspecialchars($numListings)?></h2>
 
 </body>

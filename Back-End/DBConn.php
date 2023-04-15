@@ -295,6 +295,21 @@ class DBConn {
             return false;
         }
     }
+
+    function getProfilePicByUsername($sellerName){
+        $stmt = $this->conn->prepare("SELECT path FROM ProfilePic WHERE username= ?");
+        $stmt->bind_param("s", $sellerName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                return $row["path"];
+            }
+        }
+        else{
+            return false;
+        }
+    }
     //Josh 
     function getUserListingById($itemID) {
         $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ? AND itemid = ?");
