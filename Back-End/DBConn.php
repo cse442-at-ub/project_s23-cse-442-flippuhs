@@ -137,11 +137,11 @@ class DBConn {
         $sql = "CREATE TABLE IF NOT EXISTS Messages (
             sender_username VARCHAR(50) NOT NULL,
             receiver_username VARCHAR(50) NOT NULL,
-            content VARCHAR(512) NOT NULL,
+            content VARCHAR(512) NOT NULL
             )";
 
         if ($this->conn->query($sql) === TRUE) {
-            $this->printToConsole("Table 'Listings' created successfully OR already exists");
+            $this->printToConsole("Table 'Messages' created successfully OR already exists");
         } else {
             $this->printToConsole("Error creating table: " . $this->conn->error);
         }
@@ -194,19 +194,17 @@ class DBConn {
         }
     }
 
-    function getUserMessage($sender_username, $receiver_username) {
-        $stmt = $this->conn->prepare("SELECT content FROM Messages WHERE sender_username = $sender_username AND reciever_username = $receiver_username ");
-        $stmt->bind_param("s", $username);
+    function getUserMessage() {
+        $stmt = $this->conn->prepare("SELECT * FROM Messages WHERE sender_username = ? OR receiver_username = ? ");
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$this->getUserFromCookie());
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                return $row["password"];
-            }
+            return $result;
         } 
         else {
-            $this->printToConsole("No such user found!");
+            $this->printToConsole("No such Message found!");
         }
     }
 

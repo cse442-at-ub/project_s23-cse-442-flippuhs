@@ -1,4 +1,5 @@
 <?php
+require_once('../Back-End/DBConn.php');
 
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
@@ -6,6 +7,11 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     $_SERVER['SERVER_NAME'].
     $_SERVER['PHP_SELF']);
 }
+
+$dbConn = new DBConn();
+$conn = $dbConn->connect();
+$user = $dbConn->getUserFromCookie();
+$resData = $dbConn->getUserMessage();
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +23,17 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 <body>
     <?php include 'navbar.php';?>
     <h2 class = "messagestitle"> Messages </h2>
+    <?php echo '<table> <tr> <th> Name </th> <th> Receiver </th> <th> Message </th> </tr>';
+    while ($row = $resData->fetch_assoc()): 
+        
+        echo '<tr > <td>' . $row["sender_username"] . '</td>
+        <td>' . $row["receiver_username"] . '</td>
+        <td> ' . $row["content"] . '</td></tr>';
+        
+        
+	endwhile; 
+    echo '</table>';?>
+
 </body>
 
 </html>
