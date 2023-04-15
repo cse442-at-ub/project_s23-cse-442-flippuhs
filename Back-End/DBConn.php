@@ -208,6 +208,34 @@ class DBConn {
         }
     }
 
+    function getMessagesWithUser($otherUser) {
+        $stmt = $this->conn->prepare("SELECT * FROM Messages WHERE sender_username = ? AND receiver_username = ? OR sender_username = ? AND receiver_username = ? ");
+        $stmt->bind_param("ssss", $this->getUserFromCookie(),$otherUser,$otherUser,$this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result;
+        } 
+        else {
+            $this->printToConsole("No such Message found!");
+        }
+    }
+
+    function getUsersMessaged() {
+        $stmt = $this->conn->prepare("SELECT sender_username,receiver_username FROM Messages WHERE sender_username = ? OR receiver_username = ? ");
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result;
+        } 
+        else {
+            $this->printToConsole("No such Message found!");
+        }
+    }
+
     function getProfilePicPathExists() {
         $stmt = $this->conn->prepare("SELECT path FROM ProfilePic WHERE username= ?");
         $stmt->bind_param("s", $this->getUserFromCookie());

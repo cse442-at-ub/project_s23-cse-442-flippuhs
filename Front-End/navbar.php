@@ -43,6 +43,7 @@
             <div class="mx-auto">
                 <a class="navbarbutton" href="../Front-End/CreateListing.php">Create a Listing</a>
                 <a class="navbarbutton" href="../Front-End/UserListings.php">My Listings</a>
+                <a class="navbarbutton" href="../Front-End/messages.php">Messages</a>
             </div>
             <div class="ms-auto">
                 <form action="../Back-End/Login.php" method="POST">
