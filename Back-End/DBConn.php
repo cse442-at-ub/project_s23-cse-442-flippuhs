@@ -26,6 +26,7 @@ class DBConn {
         $this->setupUsersTable();
         $this->setupProfilePicTable();
         $this->setupListingsTable();
+        $this->setupMessagesTable();
         return $this->conn;
     }
 
@@ -132,6 +133,20 @@ class DBConn {
         }
     }
 
+    function setupMessagesTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS Messages (
+            sender_username VARCHAR(50) NOT NULL,
+            receiver_username VARCHAR(50) NOT NULL,
+            content VARCHAR(512) NOT NULL
+            )";
+
+        if ($this->conn->query($sql) === TRUE) {
+            $this->printToConsole("Table 'Messages' created successfully OR already exists");
+        } else {
+            $this->printToConsole("Error creating table: " . $this->conn->error);
+        }
+    }
+
     function getEmailExists($email){
         $stmt = $this->conn->prepare("SELECT * FROM UsersTable WHERE email=?");
         $stmt->bind_param("s", $email);
@@ -176,6 +191,48 @@ class DBConn {
         } 
         else {
             $this->printToConsole("No such user found!");
+        }
+    }
+
+    function getUserMessage() {
+        $stmt = $this->conn->prepare("SELECT * FROM Messages WHERE sender_username = ? OR receiver_username = ? ");
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result;
+        } 
+        else {
+            $this->printToConsole("No such Message found!");
+        }
+    }
+
+    function getMessagesWithUser($otherUser) {
+        $stmt = $this->conn->prepare("SELECT * FROM Messages WHERE sender_username = ? AND receiver_username = ? OR sender_username = ? AND receiver_username = ? ");
+        $stmt->bind_param("ssss", $this->getUserFromCookie(),$otherUser,$otherUser,$this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result;
+        } 
+        else {
+            $this->printToConsole("No such Message found!");
+        }
+    }
+
+    function getUsersMessaged() {
+        $stmt = $this->conn->prepare("SELECT sender_username,receiver_username FROM Messages WHERE sender_username = ? OR receiver_username = ? ");
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$this->getUserFromCookie());
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result;
+        } 
+        else {
+            $this->printToConsole("No such Message found!");
         }
     }
 
@@ -277,6 +334,7 @@ class DBConn {
         }
     }
 
+
     function insertUserProfilePicPath($target_file){
         $stmt = $this->conn->prepare("INSERT INTO ProfilePic (username, path) VALUES (?,?)");
         $stmt->bind_param("ss",$this->getUserFromCookie(),$target_file);
@@ -297,6 +355,18 @@ class DBConn {
         }
         else{
             $this->printToConsole("Failed to insert new listing");
+        }
+    }
+
+    function insertMessage($sender_username,$receiver_username,$content){
+        $stmt = $this->conn->prepare("INSERT INTO Messages (sender_username, receiver_username, content)
+        VALUES (?,?,?)");
+        $stmt->bind_param("sss",$sender_username,$receiver_username,$content);
+        if($stmt->execute()==true){
+            $this->printToConsole("Inserted new Message");
+        }
+        else{
+            $this->printToConsole("Failed to insert new Message");
         }
     }
 
