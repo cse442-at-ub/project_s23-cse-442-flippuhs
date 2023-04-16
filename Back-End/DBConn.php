@@ -232,7 +232,7 @@ class DBConn {
             return $result;
         } 
         else {
-            $this->printToConsole("No such Message found!");
+            return false;
         }
     }
 
@@ -534,13 +534,29 @@ class DBConn {
         else{
             $this->printToConsole("Failed to delete user from ProfilePic");
         }
-        $stmt = $this->conn->prepare("DELETE FROM Listing WHERE username= ?");
+        $stmt = $this->conn->prepare("DELETE FROM Listings WHERE username= ?");
         $stmt->bind_param("s", $this->getUserFromCookie());
         if($stmt->execute()==true){
             $this->printToConsole("Deleted user from Listings");
         }
         else{
             $this->printToConsole("Failed to delete user from Listings");
+        }
+        $stmt = $this->conn->prepare("DELETE FROM UserCookie WHERE username= ?");
+        $stmt->bind_param("s", $this->getUserFromCookie());
+        if($stmt->execute()==true){
+            $this->printToConsole("Deleted user from UserCookie");
+        }
+        else{
+            $this->printToConsole("Failed to delete user from UserCookie");
+        }
+        $stmt = $this->conn->prepare("DELETE FROM Messages WHERE sender_username = ? OR receiver_username = ?");
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$this->getUserFromCookie());
+        if($stmt->execute()==true){
+            $this->printToConsole("Deleted user from Messages");
+        }
+        else{
+            $this->printToConsole("Failed to delete user from Messages");
         }
     }
 

@@ -38,15 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['QUERY_STRING']!="") {
 $usersMessaged = $dbConn->getUsersMessaged();
 
 $messagedArray = array();
-while($curRow = $usersMessaged->fetch_assoc()){
-    if($curRow["sender_username"]!=$user){
-        if(!in_array($curRow["sender_username"],$messagedArray)){
-            array_push($messagedArray,$curRow["sender_username"]);
+if(!$usersMessaged){
+}
+else{
+    while($curRow = $usersMessaged->fetch_assoc()){
+        if($curRow["sender_username"]!=$user){
+            if(!in_array($curRow["sender_username"],$messagedArray)){
+                array_push($messagedArray,$curRow["sender_username"]);
+            }
         }
-    }
-    if($curRow["receiver_username"]!=$user){
-        if(!in_array($curRow["receiver_username"],$messagedArray)){
-            array_push($messagedArray,$curRow["receiver_username"]);
+        if($curRow["receiver_username"]!=$user){
+            if(!in_array($curRow["receiver_username"],$messagedArray)){
+                array_push($messagedArray,$curRow["receiver_username"]);
+            }
         }
     }
 }
