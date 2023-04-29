@@ -88,7 +88,7 @@ $resData = $dbConn->getSellerListings($seller,$offset,$no_of_records_per_page);
 
                 <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$".htmlspecialchars($row['price']) . "</p>"; ?>
 
-                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . htmlspecialchars($row['itemstatus']) . "</p>"; ?>
+                <?php echo "<b><p class='signuptext' for='itemstatus'>Item Status: </b>" . htmlspecialchars($row['itemstatus']) . "</p>"; ?>
                 
         <?php echo "</div>" ?>
         </td>

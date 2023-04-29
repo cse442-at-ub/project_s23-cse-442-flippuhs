@@ -107,7 +107,7 @@ $resData = $dbConn->getUserListings($offset,$no_of_records_per_page);
                 <?php echo "<label class='signuptext' for='price'>Price $:</label>"; ?>
                 <?php echo "<input type='number' min='0' max='2147483647' name='price' id='price' value=" . '"' . htmlspecialchars($row['price']) . '"' . ">"; ?>
 
-                <?php echo "<label class='signuptext' for='itemstatus'>Item itemstatus:</label>"; ?>
+                <?php echo "<label class='signuptext' for='itemstatus'>Item Status:</label>"; ?>
                 <?php echo "<select name='itemstatus' id='itemstatus'>" ?>
                     <?php echo "<option value=" . '"' . htmlspecialchars($row['itemstatus']) . '"' . ">" . htmlspecialchars($row['itemstatus']) . "</option>"; ?>
                     <?php 
