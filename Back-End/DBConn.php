@@ -334,19 +334,24 @@ class DBConn {
         $rowsWithDistances = array();
         $listings = $this->getAllListingsForSale();
         $userZipcode= $this->getUserZipcode($this->getUserFromCookie());
-        while ($row = $listings->fetch_assoc()) {
-            $dist = $this->getDistance($userZipcode, $this->getUserZipcode($row['username']));
-            $row['distance'] = (float)substr($dist, 0, strpos($dist, ' '));
-            $rowsWithDistances[] = $row;
-        }
-        usort($rowsWithDistances, 
-        function($a, $b) {
-            if ($a['distance'] == $b['distance']) {
-                return $a['itemid'] < $b['itemid'] ? 1 : -1;
+        if ($listings->num_rows > 0) {
+            while ($row = $listings->fetch_assoc()) {
+                $dist = $this->getDistance($userZipcode, $this->getUserZipcode($row['username']));
+                $row['distance'] = (float)substr($dist, 0, strpos($dist, ' '));
+                $rowsWithDistances[] = $row;
             }
-            return $a['distance'] > $b['distance'] ? 1 : -1;
-        });
-        return $rowsWithDistances;
+            usort($rowsWithDistances, 
+            function($a, $b) {
+                if ($a['distance'] == $b['distance']) {
+                    return $a['itemid'] < $b['itemid'] ? 1 : -1;
+                }
+                return $a['distance'] > $b['distance'] ? 1 : -1;
+            });
+            return $rowsWithDistances;
+        }
+        else{
+            return false;
+        }
     }
 
     function getSellerListings($sellerName,$offset, $no_of_records_per_page) {
@@ -489,6 +494,35 @@ class DBConn {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListingsBySearchSortedDistance($search){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? AND itemname LIKE ?");
+        $forsale = "For sale";
+        $searchTerm = "%".$search."%";
+        $userZipcode= $this->getUserZipcode($this->getUserFromCookie());
+        $stmt->bind_param("sss", $this->getUserFromCookie(),$forsale,$searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rowsWithDistances = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $dist = $this->getDistance($userZipcode, $this->getUserZipcode($row['username']));
+                $row['distance'] = (float)substr($dist, 0, strpos($dist, ' '));
+                $rowsWithDistances[] = $row;
+            }
+            usort($rowsWithDistances, 
+            function($a, $b) {
+                if ($a['distance'] == $b['distance']) {
+                    return $a['itemid'] < $b['itemid'] ? 1 : -1;
+                }
+                return $a['distance'] > $b['distance'] ? 1 : -1;
+            });
+            return $rowsWithDistances;
         }
         else{
             return false;

@@ -15,6 +15,7 @@ $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
 session_start();
+unset($_SESSION['searchValue']);
 
 if($dbConn->getUserProfileInfo()!=false){
     //check that usernameCookie exists or else redirect to login page
@@ -89,7 +90,7 @@ else{
   <input type="submit" name="searchListings" style="margin-top:0%" class='logoutbutton' value="Search"></input>
 </form>
 <div class="dropdown" style="margin-left:1%">
-  <button onclick="myFunction()" class='logoutbutton'>Sort By</button>
+  <button onclick="myFunction()" style="margin-top:0%;" class='logoutbutton'>Sort By</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="../Front-End/DistanceResults.php">Distance: nearest first</a>
     <a href="../Front-End/Homepage.php?low">Price: lowest first</a>

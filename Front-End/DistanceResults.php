@@ -14,6 +14,9 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
+session_start();
+$_SESSION["searchValue"];
+
 if($dbConn->getUserProfileInfo()!=false){
     //check that usernameCookie exists or else redirect to login page
     $userInfo = $dbConn->getUserProfileInfo();
@@ -39,16 +42,28 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 // Set the number of listings to display per page
 $perPage = 2;
 
+$sortLowLink = "../Front-End/Homepage.php?low";
+$sortHighLink = "../Front-End/Homepage.php?high";
 // Get the sorted list of listings
-$listings = $dbConn->getListingsForSaleSortedDistance();
+$listings;
+if (isset($_GET['search'])||isset($_SESSION["searchValue"])){
+    $listings = $dbConn->getListingsBySearchSortedDistance($_SESSION["searchValue"]);
+    $sortLowLink = "../Front-End/SearchResults.php?low";
+    $sortHighLink = "../Front-End/SearchResults.php?high";
+}
+else{
+    $listings = $dbConn->getListingsForSaleSortedDistance();
+}
 
-// Calculate the total number of pages based on the number of listings and the per-page limit
-$totalPages = ceil(count($listings) / $perPage);
+if($listings != false){
+    // Calculate the total number of pages based on the number of listings and the per-page limit
+    $totalPages = ceil(count($listings) / $perPage);
 
-// Get the subset of listings for the current page based on the page number and per-page limit
-$startIndex = ($page - 1) * $perPage;
-$endIndex = min($startIndex + $perPage, count($listings));
-$pageListings = array_slice($listings, $startIndex, $endIndex - $startIndex);
+    // Get the subset of listings for the current page based on the page number and per-page limit
+    $startIndex = ($page - 1) * $perPage;
+    $endIndex = min($startIndex + $perPage, count($listings));
+    $pageListings = array_slice($listings, $startIndex, $endIndex - $startIndex);
+}
 
 ?>
 
@@ -72,18 +87,21 @@ $pageListings = array_slice($listings, $startIndex, $endIndex - $startIndex);
     </li>
     <li><a class='logoutbutton' href="?page=<?php echo $totalPages; ?>">Last</a></li>
 </ul>
-
+<form method="post" action="SearchResults.php">
+  <input type="text" name="search" placeholder="<?php echo $_SESSION["searchValue"]?>" style="margin-left:1%">
+  <input type="submit" name="searchListings" style="margin-top:0%" class='logoutbutton' value="Search"></input>
+</form>
 <div class="dropdown" style="margin-left:1%">
-  <button onclick="myFunction()" class='logoutbutton'>Sort By</button>
+  <button onclick="myFunction()" style="margin-top:0%;" class='logoutbutton'>Sort By</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="../Front-End/DistanceResults.php">Distance: nearest first</a>
-    <a href="../Front-End/Homepage.php?low">Price: lowest first</a>
-    <a href="../Front-End/Homepage.php?high">Price: highest first</a>
+    <a href=<?php echo $sortLowLink ?>>Price: lowest first</a>
+    <a href=<?php echo $sortHighLink ?>>Price: highest first</a>
   </div>
 </div>
 
 <table style='width:100%'>
-    <?php foreach ($pageListings as $listing): ?>
+    <?php if(!$listings){echo "<h2 class=nolistings>Sorry, there are currently no listings related to your search.</h2>";}else{foreach ($pageListings as $listing): ?>
     <tr>
         <td>
         <?php echo "<div id='login-container'>"; ?>
@@ -100,7 +118,7 @@ $pageListings = array_slice($listings, $startIndex, $endIndex - $startIndex);
         <?php echo "</div>" ?>
         </td>
     </tr>
-    <?php endforeach; ?>
+    <?php endforeach;} ?>
 </table>
 
 <button class="openChatBtn" onclick="openForm()">Messages</button>

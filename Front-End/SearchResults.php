@@ -97,18 +97,22 @@ else{
     <li><a class='logoutbutton' href="?pageno=<?php echo $total_pages; ?>">Last</a></li>
 </ul>
 <form method="post" action="../Front-End/SearchResults.php">
-  <input type="text" name="search" style="margin-left:1%">
+  <input type="text" name="search" placeholder="<?php echo $_SESSION["searchValue"]?>" style="margin-left:1%">
   <input type="submit" name="searchListings" style="margin-top:0%" class='logoutbutton' value="Search"></input>
 </form>
 <div class="dropdown" style="margin-left:1%">
-  <button onclick="myFunction()" class='logoutbutton'>Sort By</button>
+  <button onclick="myFunction()" style="margin-top:0%;" class='logoutbutton'>Sort By</button>
   <div id="myDropdown" class="dropdown-content">
+    <a href="../Front-End/DistanceResults.php?search">Distance: nearest first</a>
     <a href="../Front-End/SearchResults.php?low">Price: lowest first</a>
     <a href="../Front-End/SearchResults.php?high">Price: highest first</a>
   </div>
 </div>
-<table style='width:80%'>
-	<?php if(!$resData){echo "<h2 class=nolistings>Sorry, there are currently no listings related to your search.</h2>";}if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
+<table style='width:100%'>
+	<?php if(!$resData){echo "<h2 class=nolistings>Sorry, there are currently no listings related to your search.</h2>";}if($resData!=false)while ($row = $resData->fetch_assoc()):      
+        $dist = $dbConn->getDistance($dbConn->getUserZipcode($dbConn->getUserFromCookie()), $dbConn->getUserZipcode($row['username']));
+        $row['distance'] = (float)substr($dist, 0, strpos($dist, ' ')); 
+    ?>   
 	<tr>
 		<td>
         <?php echo "<div id='login-container'>"; ?>
@@ -118,6 +122,8 @@ else{
                 <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$" . htmlspecialchars($row['price']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='price'>Distance: </b>" . htmlspecialchars($row['distance']) . " miles" . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</p>"; ?>
         <?php echo "</div>" ?>
