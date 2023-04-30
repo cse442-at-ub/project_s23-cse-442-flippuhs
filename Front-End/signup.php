@@ -20,6 +20,7 @@ $errors = array (
     7 => "This username is in use.",
     8 => "Password needs at least on uppercase letter.",
     9 => "Username has to be alphanumeric (no special characters).",
+    10 => "Invalid zipcode entered."
 );
 
 $successMsg = "";

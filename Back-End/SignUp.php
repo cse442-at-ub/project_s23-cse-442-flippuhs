@@ -33,6 +33,12 @@ else{
             $invalid = false;
         }
 
+        $validZipcode = $dbConn->validateZipCode($zipcode);
+        if (!$validZipcode) {
+            header("Location: ../Front-End/signup.php?error=10");
+            $invalid = false;
+        }
+
         //Check if username is alphanumeric
         if (!ctype_alnum($user)){
             header("Location: ../Front-End/signup.php?error=9");

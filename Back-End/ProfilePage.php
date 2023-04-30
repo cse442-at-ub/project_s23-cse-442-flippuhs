@@ -13,7 +13,8 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
-    2 => "Image upload failed!"
+    2 => "Image upload failed!",
+    3 => "Invalid zipcode entered."
 );
 
 $successMsg = "";
