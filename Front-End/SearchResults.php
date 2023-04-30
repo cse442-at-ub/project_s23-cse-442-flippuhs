@@ -1,9 +1,6 @@
 <?php
+
 require_once('../Back-End/DBConn.php');
-require_once("../Back-End/CSRF.php");
-
-$token = CSRF::generateToken();
-
 
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
@@ -12,11 +9,17 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     $_SERVER['PHP_SELF']);
 }
 
+function printToConsole($string)
+{
+    echo '<script>console.log("' . $string . '");</script>';
+}
+
 
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
 session_start();
+unset($_SESSION["sortValue"]);
 
 if($dbConn->getUserProfileInfo()!=false){
     //check that usernameCookie exists or else redirect to login page
@@ -46,24 +49,31 @@ if (isset($_GET['pageno'])) {
 $no_of_records_per_page = 2;
 $offset = ($pageno-1) * $no_of_records_per_page; 
 
-$total_rows = $dbConn->getNumListingsForSale();
+if(isset($_POST["searchListings"])){
+    $_SESSION["searchValue"] = $_POST["search"];
+}
+
+$total_rows = $dbConn->getNumListingsForSaleSearch($_SESSION["searchValue"]);
 $total_pages = ceil($total_rows / $no_of_records_per_page);
 
+printToConsole("SEARCH VALUE IS: ".$_SESSION["searchValue"]);
+
 if (isset($_GET['low'])) {
-    $_SESSION["sortValue"] = 'low';
+    $_SESSION["searchSortValue"] = 'low';
 }
 if (isset($_GET['high'])) {
-    $_SESSION["sortValue"] = 'high';
+    $_SESSION["searchSortValue"] = 'high';
 }
-if($_SESSION["sortValue"] == 'low'){
-    $resData = $dbConn->getListingsLowToHigh($offset,$no_of_records_per_page);
+if($_SESSION["searchSortValue"] == 'low'){
+    $resData = $dbConn->getListingsBySearchLow($offset,$no_of_records_per_page,$_SESSION["searchValue"]);
 }
-else if($_SESSION["sortValue"] == 'high'){
-    $resData = $dbConn->getListingsHighToLow($offset,$no_of_records_per_page);
+else if($_SESSION["searchSortValue"] == 'high'){
+    $resData = $dbConn->getListingsBySearchHigh($offset,$no_of_records_per_page,$_SESSION["searchValue"]);
 }
 else{
-    $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
+    $resData = $dbConn->getListingsBySearch($offset,$no_of_records_per_page, $_SESSION["searchValue"]);
 }
+
 
 ?>
 
@@ -86,15 +96,15 @@ else{
     </li>
     <li><a class='logoutbutton' href="?pageno=<?php echo $total_pages; ?>">Last</a></li>
 </ul>
-<form method="post" action="SearchResults.php">
-  <input type="text" name="search" style="margin-left:1%">
-  <input type="submit" name="searchListings" style="margin-top:0%" class='logoutbutton' value="Search"></input>
+<form method="post" action="../Front-End/SearchResults.php">
+  <input type="text" name="search">
+  <input type="submit" name="searchListings" value="Search"></input>
 </form>
-<div class="dropdown" style="margin-left:1%">
+<div class="dropdown">
   <button onclick="myFunction()" class='logoutbutton'>Sort</button>
   <div id="myDropdown" class="dropdown-content">
-    <a href="../Front-End/Homepage.php?low">Price: lowest first</a>
-    <a href="../Front-End/Homepage.php?high">Price: highest first</a>
+    <a href="../Front-End/SearchResults.php?low">Price: lowest first</a>
+    <a href="../Front-End/SearchResults.php?high">Price: highest first</a>
   </div>
 </div>
 <table style='width:80%'>
@@ -107,11 +117,9 @@ else{
 
                 <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
 
-                <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) . "</p>"; ?>
+                <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$" . htmlspecialchars($row['price']) . "</p>"; ?>
 
-                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</p>"; ?>
-        </a>
-                
+                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href='LINK'>" . htmlspecialchars($row['username']) . "</p>"; ?>
         <?php echo "</div>" ?>
         </td>
 	</tr>
@@ -119,17 +127,14 @@ else{
 </table>
 <button class="openChatBtn" onclick="openForm()">Messages</button>
 <div class="openChat">
-    <form id="login-container" action="../Back-End/Message.php" method="post" enctype="multipart/form-data">
+    <form id="login-container">
         <h1>Chat</h1>
-        <label for ="user"><b>User</b></label?>
-        <textarea placeholder="Select User" name="receiver_username" required></textarea>
         <label for="msg"><b>Message</b></label>
-        <textarea placeholder="Type message.." name="content" required></textarea>
-        <button type="submit" class="navbarbutton2" name="sendMessage">Send</button>
+        <textarea placeholder="Type message.." name="msg" required></textarea>
+        <button type="submit" class="navbarbutton2">Send</button>
         <button type="button" class="navbarbutton1" onclick="closeForm()">
         Close
         </button>
-        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
     </form>
 </div>
 <script>

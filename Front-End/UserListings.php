@@ -11,6 +11,10 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     $_SERVER['PHP_SELF']);
 }
 
+session_start();
+unset($_SESSION['searchValue']);
+unset($_SESSION["sortValue"]);
+
 $errors = array (
     1 => "Image upload failed!",
     2 => "Item does not exist or belong to current user!",

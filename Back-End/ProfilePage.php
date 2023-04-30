@@ -11,6 +11,10 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     $_SERVER['PHP_SELF']);
 }
 
+session_start();
+unset($_SESSION['searchValue']);
+unset($_SESSION["sortValue"]);
+
 $errors = array (
     1 => "Email is already in use. Please use another email and try again.",
     2 => "Image upload failed!"

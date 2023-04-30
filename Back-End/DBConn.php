@@ -395,6 +395,96 @@ class DBConn {
         }
     }
 
+    function getNumListingsForSaleSearch($search) {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND itemstatus=? AND itemname LIKE ?");
+        $forsale = "For sale";
+        $searchTerm = "%".$search."%";
+        $stmt->bind_param("sss", $this->getUserFromCookie(),$forsale,$searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                return $row["COUNT(*)"];
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListingsBySearch($offset,$no_of_records_per_page,$search){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? AND itemname LIKE ? LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $searchTerm = "%".$search."%";
+        $stmt->bind_param("sss", $this->getUserFromCookie(),$forsale,$searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListingsLowToHigh($offset,$no_of_records_per_page){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? ORDER BY price ASC LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListingsHighToLow($offset,$no_of_records_per_page){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? ORDER BY price DESC LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListingsBySearchLow($offset,$no_of_records_per_page,$search){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? AND itemname LIKE ? ORDER BY price ASC LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $searchTerm = "%".$search."%";
+        $stmt->bind_param("sss", $this->getUserFromCookie(),$forsale,$searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    function getListingsBySearchHigh($offset,$no_of_records_per_page,$search){
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=? AND itemname LIKE ? ORDER BY price DESC LIMIT $offset, $no_of_records_per_page");
+        $forsale = "For sale";
+        $searchTerm = "%".$search."%";
+        $stmt->bind_param("sss", $this->getUserFromCookie(),$forsale,$searchTerm);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
     function insertUser($username,$firstname,$lastname,$email,$password,$zipcode){
         $stmt = $this->conn->prepare("INSERT INTO UsersTable (username, firstname, lastname, email, password, zipcode)
         VALUES (?,?,?,?,?,?)");

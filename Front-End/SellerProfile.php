@@ -4,6 +4,9 @@ require_once('../Back-End/DBConn.php');
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
 
+session_start();
+unset($_SESSION['searchValue']);
+unset($_SESSION["sortValue"]);
 
 $seller = $_GET['sellername'];
 

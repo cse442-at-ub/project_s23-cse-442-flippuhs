@@ -11,6 +11,10 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 
 $token = CSRF::generateToken();
 
+session_start();
+unset($_SESSION['searchValue']);
+unset($_SESSION["sortValue"]);
+
 $errors = array (
     1 => "Can't send message to yourself.",
     2 => "User does not exist."

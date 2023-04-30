@@ -3,6 +3,10 @@ require_once("../Back-End/CSRF.php");
 
 $token = CSRF::generateToken();
 
+session_start();
+unset($_SESSION['searchValue']);
+unset($_SESSION["sortValue"]);
+
 $errors = array (
     1 => "There was an error with your image, try again.",
     2 => "Invalid value(s) entered!"
