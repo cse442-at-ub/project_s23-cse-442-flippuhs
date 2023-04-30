@@ -91,7 +91,7 @@ else{
   <input type="submit" name="searchListings" style="margin-top:0%" class='logoutbutton' value="Search"></input>
 </form>
 <div class="dropdown" style="margin-left:1%">
-  <button onclick="myFunction()" class='logoutbutton'>Sort</button>
+  <button onclick="myFunction()" class='logoutbutton'>Sort By</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="../Front-End/Homepage.php?low">Price: lowest first</a>
     <a href="../Front-End/Homepage.php?high">Price: highest first</a>

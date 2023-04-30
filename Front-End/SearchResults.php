@@ -97,11 +97,11 @@ else{
     <li><a class='logoutbutton' href="?pageno=<?php echo $total_pages; ?>">Last</a></li>
 </ul>
 <form method="post" action="../Front-End/SearchResults.php">
-  <input type="text" name="search">
-  <input type="submit" name="searchListings" value="Search"></input>
+  <input type="text" name="search" style="margin-left:1%">
+  <input type="submit" name="searchListings" style="margin-top:0%" class='logoutbutton' value="Search"></input>
 </form>
-<div class="dropdown">
-  <button onclick="myFunction()" class='logoutbutton'>Sort</button>
+<div class="dropdown" style="margin-left:1%">
+  <button onclick="myFunction()" class='logoutbutton'>Sort By</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="../Front-End/SearchResults.php?low">Price: lowest first</a>
     <a href="../Front-End/SearchResults.php?high">Price: highest first</a>
