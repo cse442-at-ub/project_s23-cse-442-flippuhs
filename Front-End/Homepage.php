@@ -4,14 +4,12 @@ require_once("../Back-End/CSRF.php");
 
 $token = CSRF::generateToken();
 
-
 if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     header('Location: '.
     'https://'.
     $_SERVER['SERVER_NAME'].
     $_SERVER['PHP_SELF']);
 }
-
 
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
@@ -70,8 +68,19 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
     </li>
     <li><a class='logoutbutton' href="?pageno=<?php echo $total_pages; ?>">Last</a></li>
 </ul>
-<table style='width:80%'>
-	<?php if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
+<div class="dropdown" style="margin-left:1%">
+  <button onclick="myFunction()" class='logoutbutton'>Sort By</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a href="../Front-End/DistanceResults.php">Distance: nearest first</a>
+    <a href="../Front-End/Homepage.php?low">Price: lowest first</a>
+    <a href="../Front-End/Homepage.php?high">Price: highest first</a>
+  </div>
+</div>
+<table style='width:100%'>
+	<?php if($resData!=false) while ($row = $resData->fetch_assoc()):     
+        $dist = $dbConn->getDistance($dbConn->getUserZipcode($dbConn->getUserFromCookie()), $dbConn->getUserZipcode($row['username']));
+        $row['distance'] = (float)substr($dist, 0, strpos($dist, ' ')); 
+    ?>
 	<tr>
 		<td>
         <?php echo "<div id='login-container'>"; ?>
@@ -81,10 +90,10 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
                 <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) . "</p>"; ?>
-
-                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</p>"; ?>
-        </a>
                 
+                <?php echo "<b><p class='signuptext' for='price'>Distance: </b>" . htmlspecialchars($row['distance']) . " miles" . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</a></p>"; ?>
         <?php echo "</div>" ?>
         </td>
 	</tr>
@@ -114,8 +123,10 @@ $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
     function closeForm() {
        document.querySelector(".openChat").style.display = "none";
     }
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
  </script>
-
 
 </body>
 </html>
