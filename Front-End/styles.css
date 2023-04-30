@@ -35,7 +35,7 @@ body {
 
 .navbarbutton2 {
     background-color: gold;
-    color: white;
+    color: black;
     padding: 5px;
     border: 2px solid gold;
     border-radius: 10px;
@@ -82,7 +82,7 @@ body {
     border-color: inherit;
     border-width: medium;
     background-color: gold;
-    color: white;
+    color: black;
     padding: 12px 20px;
     margin: 8px 0;
     border-radius: 5px;
@@ -138,7 +138,7 @@ body {
 
 .openChatBtn {
     background-color: gold;
-    color: white;
+    color: black;
     padding: 16px 20px;
     border: none;
     font-weight: 500;
@@ -174,7 +174,7 @@ body {
 
 .fileInput::file-selector-button {
     background-color: gold;
-    color: white;
+    color: black;
     padding: 5px;
     border: 2px solid gold;
     border-radius: 10px;
@@ -184,14 +184,14 @@ body {
 
     .fileInput::file-selector-button:hover {
         background-color: goldenrod;
-        color: white;
+        color: black;
         border: 2px solid goldenrod;
         border-radius: 10px;
     }
 
 .logoutbutton {
     background-color: gold;
-    color: white;
+    color: black;
     padding: 5px;
     border: 2px solid gold;
     border-radius: 10px;
@@ -284,7 +284,7 @@ body {
   .messageButton { 
     background-color: gold;
     font-size: 20px;
-    color: white;
+    color: black;
     padding: 10px;
     border: 8px solid gold;
     border-radius: 10px;
@@ -313,7 +313,7 @@ body {
   .messageSellerButton {
     background-color: gold;
     font-size: 20px;
-    color: white;
+    color: black;
     padding: 10px;
     border: 8px solid gold;
     border-radius: 10px;
@@ -327,4 +327,9 @@ body {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+  }
+
+  .nolistings{
+    color: white;
+    margin-left:1%;
   }

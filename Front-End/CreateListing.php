@@ -50,7 +50,7 @@ if(isset($_GET['success'])) {
         </div>
         <div class="form-group">
             <label class="signuptext" for="imageToUpload">Select image to upload:</label>
-            <input class="fileinput" type="file" name="imageToUpload" onchange="VerifyUploadSizeIsOK()" id="imageToUpload" required="required">
+            <input class="fileInput" type="file" name="imageToUpload" style="color:white;" onchange="VerifyUploadSizeIsOK()" id="imageToUpload" required="required">
         </div>
         <div class="form-group">
             <input class="navbarbutton2" style="width:100%; margin: 10px auto" type="submit" name="createListing" value="Confirm"></input>

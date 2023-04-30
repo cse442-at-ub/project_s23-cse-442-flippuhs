@@ -66,7 +66,7 @@ else{
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<body>
+<body style="color:gold">
     <?php include 'navbar.php';?>
     <h2 class = "messagestitle"> Messages </h2>
     <div class="dropdown">
@@ -97,7 +97,7 @@ else{
             }?>
         </td>
     </tr>
-    <form id="login-container" class="bottomForm" action="../Back-End/Message.php" method="post" enctype="multipart/form-data">
+    <form id="login-container" style="color:gold" class="bottomForm" action="../Back-End/Message.php" method="post" enctype="multipart/form-data">
         <?php 
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['QUERY_STRING']!="" && $errorMsg==""){
             echo '<label for="msg"><b>Message</b></label>

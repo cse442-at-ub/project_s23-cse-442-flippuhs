@@ -108,7 +108,7 @@ else{
   </div>
 </div>
 <table style='width:80%'>
-	<?php if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
+	<?php if(!$resData){echo "<h2 class=nolistings>Sorry, there are currently no listings related to your search.</h2>";}if($resData!=false)while ($row = $resData->fetch_assoc()): ?>
 	<tr>
 		<td>
         <?php echo "<div id='login-container'>"; ?>
@@ -119,7 +119,7 @@ else{
 
                 <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$" . htmlspecialchars($row['price']) . "</p>"; ?>
 
-                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href='LINK'>" . htmlspecialchars($row['username']) . "</p>"; ?>
+                <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</p>"; ?>
         <?php echo "</div>" ?>
         </td>
 	</tr>

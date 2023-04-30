@@ -125,7 +125,7 @@ $resData = $dbConn->getUserListings($offset,$no_of_records_per_page);
                 <?php echo "</select>" ?>
 
                 <?php echo "<label class='signuptext' for='fileToUpload'>Select image to upload:</label>"; ?>
-                <?php echo "<input class='fileinput' type='file' name='fileToUpload' onchange='VerifyUploadSizeIsOK()' id='fileToUpload'>"; ?>
+                <?php echo "<input class='fileInput' type='file' name='fileToUpload' onchange='VerifyUploadSizeIsOK()' id='fileToUpload'>"; ?>
                 <?php echo "<label class='signuptext'>Maximum upload file size: 2 MB.</label>"; ?>
 
                 <?php echo "<input type='hidden' name='itemID' value=$row[itemid]>"; ?>
