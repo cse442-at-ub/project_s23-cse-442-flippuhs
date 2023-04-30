@@ -281,6 +281,74 @@ class DBConn {
         }
     }
 
+    function validateZipCode($zipCode) {
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:$zipCode&key=AIzaSyBZ_HYfAZm6qNE02McacFk32RGvf06d6xY";
+        $response = file_get_contents($url);
+        $response = json_decode($response);
+
+        if ($response->status == "OK" && count($response->results) > 0) {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
+      
+    function getUserZipcode($username) {
+        $stmt = $this->conn->prepare("SELECT zipcode FROM UsersTable WHERE username=?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute(); 
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row["zipcode"];
+        } 
+        else {
+            return false;
+        }
+    }
+
+    function getDistance($origin, $destination) {
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=$destination&origins=$origin&units=imperial&key=AIzaSyBZ_HYfAZm6qNE02McacFk32RGvf06d6xY";
+        $response = file_get_contents($url);
+        $response = json_decode($response);
+        $dist = $response->rows[0]->elements[0]->distance->text;
+        return $dist;
+    }
+    
+    function getAllListingsForSale() {
+        $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username != ? AND itemstatus=?");
+        $forsale = "For sale";
+        $stmt->bind_param("ss", $this->getUserFromCookie(),$forsale);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function getListingsForSaleSortedDistance() {
+        $rowsWithDistances = array();
+        $listings = $this->getAllListingsForSale();
+        $userZipcode= $this->getUserZipcode($this->getUserFromCookie());
+        while ($row = $listings->fetch_assoc()) {
+            $dist = $this->getDistance($userZipcode, $this->getUserZipcode($row['username']));
+            $row['distance'] = (float)substr($dist, 0, strpos($dist, ' '));
+            $rowsWithDistances[] = $row;
+        }
+        usort($rowsWithDistances, 
+        function($a, $b) {
+            if ($a['distance'] == $b['distance']) {
+                return $a['itemid'] < $b['itemid'] ? 1 : -1;
+            }
+            return $a['distance'] > $b['distance'] ? 1 : -1;
+        });
+        return $rowsWithDistances;
+    }
+
     function getSellerListings($sellerName,$offset, $no_of_records_per_page) {
         $stmt = $this->conn->prepare("SELECT * FROM Listings WHERE username = ? LIMIT $offset, $no_of_records_per_page");
         $forsale = "For sale";
@@ -541,6 +609,9 @@ class DBConn {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             return 1;
+        }
+        else if (!$this->validateZipCode($zipcode)){
+            return 2;
         }
         else {
             $stmt = $this->conn->prepare("UPDATE UsersTable SET firstname = COALESCE(NULLIF(?, ''), firstname), lastname = COALESCE(NULLIF(?, ''), lastname), email = COALESCE(NULLIF(?, ''), email), zipcode = COALESCE(NULLIF(?, ''), zipcode) WHERE username = ? ");

@@ -66,9 +66,14 @@ else{
 
         if ($updateStatus == 0 && $image_success) {
             header("Location: ProfilePage.php?success");
-        } elseif ($updateStatus == 0 && !$image_chosen) {
+        } 
+        else if ($updateStatus == 0 && !$image_chosen) {
             header("Location: ProfilePage.php?success");
-        } else {
+        } 
+        else if ($updateStatus == 2){
+            header("Location: ProfilePage.php?error=3");
+        }
+        else {
             if ($updateStatus != 0 && $image_success) {
                 header("Location: ProfilePage.php?error=1");
             } else if ($updateStatus != 0 && !$image_chosen) {
