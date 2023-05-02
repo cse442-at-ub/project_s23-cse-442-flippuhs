@@ -114,6 +114,14 @@ else{
 
                 <?php echo "<b><p class='signuptext' for='sellingMethod'>Selling Method: </b>" . htmlspecialchars($row['sellingmethod']) . "</p>"; ?>
 
+                <?php 
+                    if($row['sellingmethod'] == "Auction"){
+                        echo "<div class='form-group'>
+                        <label class='signuptext' for='sellingmethod'>Bid:  </b>". "$" . "</label>
+                        <input type='number' name='bidPrice' id='bidPrice' maxlength='12' required='required' min='0' max='2147483647' placeholder='current_price'/>
+                        </div>";
+                    }?>
+
                 
 
                 
