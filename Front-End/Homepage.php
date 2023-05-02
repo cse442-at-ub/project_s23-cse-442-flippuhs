@@ -111,8 +111,16 @@ else{
                 <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) . "</p>"; ?>
+
+                <?php echo "<b><p class='signuptext' for='sellingMethod'>Selling Method: </b>" . htmlspecialchars($row['sellingmethod']) . "</p>"; ?>
+
+                
+
                 
                 <?php echo "<b><p class='signuptext' for='price'>Distance: </b>" . htmlspecialchars($row['distance']) . " miles" . "</p>"; ?>
+
+                
+
 
                 <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</a></p>"; ?>
         <?php echo "</div>" ?>

@@ -20,6 +20,7 @@ else{
         $item_name = $_POST['item_name'];
         $item_desc = $_POST['item_desc'];
         $item_price = $_POST['item_price'];
+        $selling_method= $_POST['selling_method'];
 
         if ($item_price < 0 || $item_price > 2147483647) {
             header("Location: ../Front-End/CreateListing.php?error=2");
@@ -51,7 +52,7 @@ else{
                     printToConsole($target_file);
                     if (move_uploaded_file($_FILES["imageToUpload"]["tmp_name"], $target_file)) {
                         printToConsole("The file " . htmlspecialchars(basename($_FILES["imageToUpload"]["name"])) . " has been uploaded.");
-                        $dbConn->insertNewListing($item_name, $item_desc, $item_price, $target_file, $username);
+                        $dbConn->insertNewListing($item_name, $item_desc, $item_price, $target_file, $username, $selling_method);
                         $image_success = true;
                         printToConsole("New Listing created");
                     } else {

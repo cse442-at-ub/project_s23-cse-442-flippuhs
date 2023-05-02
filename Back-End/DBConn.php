@@ -123,7 +123,8 @@ class DBConn {
             price INT NOT NULL,
             imagepath VARCHAR(2048) NOT NULL,
             username VARCHAR(512) NOT NULL,
-            itemstatus VARCHAR(50) NOT NULL
+            itemstatus VARCHAR(50) NOT NULL,
+            sellingmethod VARCHAR(50) NOT NULL
             )";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -611,10 +612,10 @@ class DBConn {
         }
     }
 
-    function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username){
-        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus) VALUES (?,?,?,?,?,?)");
+    function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username, $selling_method){
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus, sellingmethod) VALUES (?,?,?,?,?,?,?)");
         $forsale = "For sale";
-        $stmt->bind_param("ssisss",$itemname, $itemdesc, $price, $imagepath, $username,$forsale);
+        $stmt->bind_param("ssissss",$itemname, $itemdesc, $price, $imagepath, $username, $forsale, $selling_method);
         if($stmt->execute()==true){
             $this->printToConsole("Inserted new listing");
         }

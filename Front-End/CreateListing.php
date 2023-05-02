@@ -48,6 +48,11 @@ if(isset($_GET['success'])) {
             <input type="number" name="item_price" id="itemPrice" maxlength="12" required="required" step="1" min="0" max="2147483647"
                 placeholder="0"/>
         </div>
+        <label class='signuptext' for='sellingMethod'>Selling Method:</label>
+                <select name='selling_method' id='sellingMethod'>
+                    <option value="List">List</option>
+                    <option value="Auction">Auction</option>
+                </select>
         <div class="form-group">
             <label class="signuptext" for="imageToUpload">Select image to upload:</label>
             <input class="fileInput" type="file" name="imageToUpload" style="color:white;" onchange="VerifyUploadSizeIsOK()" id="imageToUpload" required="required">
