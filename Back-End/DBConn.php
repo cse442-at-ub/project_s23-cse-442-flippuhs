@@ -27,6 +27,7 @@ class DBConn {
         $this->setupProfilePicTable();
         $this->setupListingsTable();
         $this->setupMessagesTable();
+        $this->setupBiddingTable();
         return $this->conn;
     }
 
@@ -128,6 +129,20 @@ class DBConn {
 
         if ($this->conn->query($sql) === TRUE) {
             $this->printToConsole("Table 'Listings' created successfully OR already exists");
+        } else {
+            $this->printToConsole("Error creating table: " . $this->conn->error);
+        }
+    }
+
+    function setupBiddingTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS Bids (
+            itemid INT PRIMARY KEY NOT NULL,
+            bidder_username VARCHAR(512) NOT NULL,
+            price INT NOT NULL
+            )";
+
+        if ($this->conn->query($sql) === TRUE) {
+            $this->printToConsole("Table 'Bids' created successfully OR already exists");
         } else {
             $this->printToConsole("Error creating table: " . $this->conn->error);
         }
