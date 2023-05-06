@@ -125,11 +125,15 @@ else{
 	<?php if($resData!=false) while ($row = $resData->fetch_assoc()):     
         $dist = $dbConn->getDistance($dbConn->getUserZipcode($dbConn->getUserFromCookie()), $dbConn->getUserZipcode($row['username']));
         $row['distance'] = (float)substr($dist, 0, strpos($dist, ' ')); 
+        $bidName = $dbConn->getUserBid($row['itemid'], $row['price']); 
+        if($row['sellingmethod'] == 'Auction' && $dbConn->checkTime($row['itemid'])){
+            $dbConn->insertMessage($row['username'], $bidName , "Congratulations you won the listing on item ". $row['itemname']);
+        }
     ?>
 	<tr>
 		<td>
         <?php echo "<div id='login-container'>"; ?>
-        <?php $bidName = $dbConn->getUserBid($row['itemid'], $row['price']); ?>
+       
             <?php echo "<img src=" . htmlspecialchars($row['imagepath']) . " class='listing'>".'<br>'; ?>
                 <?php echo "<b><p class='signuptext' for='itemName'>Item Name: </b>" . htmlspecialchars($row['itemname']) . "</p>"; ?>
 
@@ -161,6 +165,7 @@ else{
                         <form  action="../Back-End/Auctions.php" method='post'>
                         <div class='form-group'>
                         <label class='signuptext' for='sellingmethod'>Bid:  </b> </label>
+                        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                         <?php echo "<input type='number' name='bidPrice' id='bidPrice' maxlength='12' required='required' min='0' max='2147483647' placeholder='Must be greater than $" . htmlspecialchars($row['price']) . "'/>" ; ?>
                         <?php echo "<input type='hidden' name='itemID' value=" . htmlspecialchars($row['itemid']) . "/>"; ?>
                         <?php echo "<input type='hidden' name='pageNo' value=" . htmlspecialchars($pageno). "/>"; ?>
