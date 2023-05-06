@@ -4,8 +4,8 @@ require_once("User.php");
 class DBConn {
     public $conn;
     private $servername = "oceanus.cse.buffalo.edu";
-    private $username = "jeaviles";
-    private $password = "50265507";
+    private $username = "cho29";
+    private $password = "50306365";
     private $dbname = "cse442_2023_spring_team_v_db";
 
     private $user;
@@ -681,10 +681,10 @@ class DBConn {
         $stmt->bind_param("i", $itemID);
         $stmt->execute();
         $result = $stmt->get_result();
-        if(time() > $result){
+        if((time() - 259200) < intval($result)){
             $sold = "Sold";
             $stmt = $this->conn->prepare("UPDATE Listings SET itemstatus=? WHERE itemid= ?");
-            $stmt->bind_param("ss",$sold,$itemID);
+            $stmt->bind_param("si",$sold,$itemID);
             $stmt->execute();
             return true;
         }

@@ -135,11 +135,11 @@ else{
                 <?php echo "<b><p class='signuptext' for='sellingMethod'>Selling Method: </b>" . htmlspecialchars($row['sellingmethod']) . "</p>"; ?>
                 
                 <?php if($row['sellingmethod'] == "Auction"): ?>
-                        <?php $timeLeft = (time() - $row['listTime']) / 3600;?>
+                        <?php $timeLeft = ((259200 + $row['listTime']) - time()) / 3600;?>
                         <?php $timeLeft = round($timeLeft, 2);?>
                         <?php $timestatus = "Seconds left to Bid!";?>
                         <?php if($timeLeft > 0){
-                            $timestatus = (string)$timeLeft + " hours left!";
+                            $timestatus = (string)$timeLeft . " hours left!";
                         }
                         ?>
 
@@ -149,7 +149,7 @@ else{
                         <div class='form-group'>
                         <label class='signuptext' for='sellingmethod'>Bid:  </b> </label>
                         <?php echo "<input type='number' name='bidPrice' id='bidPrice' maxlength='12' required='required' min='0' max='2147483647' placeholder='Must be greater than $" . htmlspecialchars($row['price']) . "'/>" ; ?>
-                        <?php echo "<input type='hidden' name='itemID' value=" . htmlspecialchars($row['itemid']). "/>"; ?>
+                        <?php echo "<input type='hidden' name='itemID' value=" . htmlspecialchars($row['itemid']) . "/>"; ?>
                         <?php echo "<input type='hidden' name='pageNo' value=" . htmlspecialchars($pageno). "/>"; ?>
                         <button type='submit' class='navbarbutton2' name='sendBid'>Bid</button>
                         <p><span style="color:red"><?php echo $errorMsg ?></span></p>
