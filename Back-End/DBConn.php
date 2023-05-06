@@ -324,6 +324,34 @@ class DBConn {
         }
     }
 
+    function getListName($itemID) {
+        $stmt = $this->conn->prepare("SELECT itemname FROM Listings WHERE itemid=?");
+        $stmt->bind_param("i", $itemID);
+        $stmt->execute(); 
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row["itemname"];
+        } 
+        else {
+            return false;
+        }
+    }
+
+    function getUserBid($itemID, $price) {
+        $stmt = $this->conn->prepare("SELECT username FROM Auctions WHERE item_ID=? AND bid=?");
+        $stmt->bind_param("ii", $itemID,$price);
+        $stmt->execute(); 
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row["username"];
+        } 
+        else {
+            return "";
+        }
+    }
+
     function getDistance($origin, $destination) {
         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=$destination&origins=$origin&units=imperial&key=AIzaSyBZ_HYfAZm6qNE02McacFk32RGvf06d6xY";
         $response = file_get_contents($url);

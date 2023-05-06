@@ -9,7 +9,7 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     'https://'.
     $_SERVER['SERVER_NAME'].
     $_SERVER['PHP_SELF']);
-}
+} 
 
 
 $errors = array (
@@ -18,9 +18,11 @@ $errors = array (
 
 $errorMsg = "";
 
+$itemErrorId = isset($_GET['itemdesc']) ? (string)$_GET['itemdesc'] : null;
 $errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
 if ($errorId != 0 && array_key_exists($errorId, $errors)) {
     $errorMsg = $errors[$errorId];
+    $errorMsg = $errorMsg . " on listing, " . strval($itemErrorId);
 }
 
 
@@ -83,6 +85,7 @@ else{
     $resData = $dbConn->getListingsForSale($offset,$no_of_records_per_page);
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -116,6 +119,7 @@ else{
     <a href="../Front-End/Homepage.php?high">Price: highest first</a>
   </div>
 </div>
+<p><span style="color:red"><?php echo $errorMsg ?></span></p>
 <table style='width:100%'>
 	<?php if($resData!=false) while ($row = $resData->fetch_assoc()):     
         $dist = $dbConn->getDistance($dbConn->getUserZipcode($dbConn->getUserFromCookie()), $dbConn->getUserZipcode($row['username']));
@@ -124,15 +128,24 @@ else{
 	<tr>
 		<td>
         <?php echo "<div id='login-container'>"; ?>
+        <?php $bidName = $dbConn->getUserBid($row['itemid'], $row['price']); ?>
             <?php echo "<img src=" . htmlspecialchars($row['imagepath']) . " class='listing'>".'<br>'; ?>
                 <?php echo "<b><p class='signuptext' for='itemName'>Item Name: </b>" . htmlspecialchars($row['itemname']) . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='itemDescription'>Item Description: </b>" . htmlspecialchars($row['itemdesc']) . "</p>"; ?>
 
-                <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) . "</p>"; ?>
-
                 <?php echo "<b><p class='signuptext' for='sellingMethod'>Selling Method: </b>" . htmlspecialchars($row['sellingmethod']) . "</p>"; ?>
-
+                <?php if($row['sellingmethod'] == "Auction" && strlen($bidName) != 0){
+                    echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) . " ~ User: ". htmlspecialchars($bidName)."</p>"; 
+                } 
+                elseif($row['sellingmethod'] == "Auction" && strlen($bidname) == 0){
+                    echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) ." Be the first to place a bid!</p>";
+                } 
+                else{
+                    echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) ."</p>";
+                } 
+                ?>
+                
                 <?php if($row['sellingmethod'] == "Auction"): ?>
                     
                         <form  action="../Back-End/Auctions.php" method='post'>
@@ -142,7 +155,6 @@ else{
                         <?php echo "<input type='hidden' name='itemID' value=" . htmlspecialchars($row['itemid']). "/>"; ?>
                         <?php echo "<input type='hidden' name='pageNo' value=" . htmlspecialchars($pageno). "/>"; ?>
                         <button type='submit' class='navbarbutton2' name='sendBid'>Bid</button>
-                        <p><span style="color:red"><?php echo $errorMsg ?></span></p>
                         </div>
                         </form>
                         

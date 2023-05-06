@@ -22,13 +22,14 @@ else{
         $itemID = $_POST['itemID'];
         $list_price = $dbConn->getPriceByListing($itemID);
         $bid = $_POST['bidPrice'];
+        $item_name = $dbConn->getListName($itemID);
         if($bid > $list_price){
             $dbConn->insertBid($itemID, $sender_username, $bid);
             $dbConn->updateListingPrice($bid, $itemID);
             header("Location: ../Front-End/Homepage.php?pageno=".$page);
         }
         else{
-            header("Location: ../Front-End/Homepage.php?error=1");
+            header("Location: ../Front-End/Homepage.php?error=1&itemname=" . $item_name);
         }
        
 
