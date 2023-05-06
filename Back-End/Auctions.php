@@ -20,11 +20,12 @@ else{
        
         $page = $_POST['pageNo'];
         $itemID = $_POST['itemID'];
-        $itemID = intval(str_replace(" /","",$_POST['itemID']));
-        echo $itemID;
+        $itemID = intval(str_replace("/","",$_POST['itemID']));
         $list_price = $dbConn->getPriceByListing($itemID);
         $timeCheck = $dbConn->checkTime($itemID);
         $bid = $_POST['bidPrice'];
+        echo $timeCheck;
+        
         if($timeCheck){
             header("Location: ../Front-End/Homepage.php?error=2");
         }
@@ -36,6 +37,7 @@ else{
         else{
             header("Location: ../Front-End/Homepage.php?error=1");
         }
+        
        
 
         

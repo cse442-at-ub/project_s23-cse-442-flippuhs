@@ -681,7 +681,8 @@ class DBConn {
         $stmt->bind_param("i", $itemID);
         $stmt->execute();
         $result = $stmt->get_result();
-        if((time() - 259200) < intval($result)){
+        $value = $result->fetch_object();
+        if((time() - $value->listTime) > 259200){
             $sold = "Sold";
             $stmt = $this->conn->prepare("UPDATE Listings SET itemstatus=? WHERE itemid= ?");
             $stmt->bind_param("si",$sold,$itemID);
