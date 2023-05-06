@@ -4,11 +4,11 @@ require_once("CSRF.php");
 
 session_start();
 
-/*if (!CSRF::verifyToken($_POST['csrf_token'])) {
+if (!CSRF::verifyToken($_POST['csrf_token'])) {
     header("Location: ../Front-End/login.php");
 }
-*/
-//else{
+
+else{
 
     
 
@@ -36,4 +36,4 @@ session_start();
     }
 
     
-//}
+}
