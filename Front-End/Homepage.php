@@ -128,6 +128,7 @@ else{
         $bidName = $dbConn->getUserBid($row['itemid'], $row['price']); 
         if($row['sellingmethod'] == 'Auction' && $dbConn->checkTime($row['itemid'])){
             $dbConn->insertMessage($row['username'], $bidName , "Congratulations you won the listing on item ". $row['itemname']);
+            continue;
         }
     ?>
 	<tr>
