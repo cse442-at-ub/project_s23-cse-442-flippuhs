@@ -27,6 +27,7 @@ class DBConn {
         $this->setupProfilePicTable();
         $this->setupListingsTable();
         $this->setupMessagesTable();
+        $this->setupAuctionsTable();
         return $this->conn;
     }
 
@@ -143,6 +144,20 @@ class DBConn {
 
         if ($this->conn->query($sql) === TRUE) {
             $this->printToConsole("Table 'Messages' created successfully OR already exists");
+        } else {
+            $this->printToConsole("Error creating table: " . $this->conn->error);
+        }
+    }
+
+    function setupAuctionsTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS Auctions (
+            item_ID INT NOT NULL,
+            username VARCHAR(50) NOT NULL,
+            bid INT NOT NULL
+            )";
+
+        if ($this->conn->query($sql) === TRUE) {
+            $this->printToConsole("Table 'Auctions' created successfully OR already exists");
         } else {
             $this->printToConsole("Error creating table: " . $this->conn->error);
         }
@@ -468,6 +483,30 @@ class DBConn {
             return false;
         }
     }
+    function getPriceByListing($itemID) {
+        $stmt = $this->conn->prepare("SELECT price FROM Listings WHERE  itemid = ?");
+        $stmt->bind_param("i", $itemID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row["price"];
+        } 
+        else {
+            return false;
+        }
+    }
+
+    function updateListingPrice($new_price, $itemID){
+        $stmt = $this->conn->prepare("UPDATE Listings SET price=? WHERE itemid= ?");
+        $stmt->bind_param("ii",$new_price, $itemID);
+        if($stmt->execute()==true){
+            $this->printToConsole("Updated listing price");
+        }
+        else{
+            $this->printToConsole("Failed to update listing price");
+        }
+    }
 
     function getNumListingsForSaleSearch($search) {
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Listings WHERE username!=? AND itemstatus=? AND itemname LIKE ?");
@@ -633,6 +672,18 @@ class DBConn {
         }
         else{
             $this->printToConsole("Failed to insert new Message");
+        }
+    }
+
+    function insertBid($itemID,$username,$bid){
+        $stmt = $this->conn->prepare("INSERT INTO Auctions (item_ID, username, bid)
+        VALUES (?,?,?)");
+        $stmt->bind_param("isi",$itemID,$username,$bid);
+        if($stmt->execute()==true){
+            $this->printToConsole("Inserted new Bid");
+        }
+        else{
+            $this->printToConsole("Failed to insert new Bid");
         }
     }
 

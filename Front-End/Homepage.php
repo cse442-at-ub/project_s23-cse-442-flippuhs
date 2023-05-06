@@ -11,8 +11,27 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
     $_SERVER['PHP_SELF']);
 }
 
+
+$errors = array (
+    1 => "Bid must be higher than the current price",
+);
+
+$errorMsg = "";
+
+$errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
+if ($errorId != 0 && array_key_exists($errorId, $errors)) {
+    $errorMsg = $errors[$errorId];
+}
+
+
 $dbConn = new DBConn();
 $conn = $dbConn->connect();
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['QUERY_STRING']!="") {
+    $query = $_SERVER['QUERY_STRING'];
+    $resData = $dbConn->getMessagesWithUser($query);
+    $_SESSION["messageUser"] = $query;
+}
 
 session_start();
 unset($_SESSION['searchValue']);
@@ -114,15 +133,21 @@ else{
 
                 <?php echo "<b><p class='signuptext' for='sellingMethod'>Selling Method: </b>" . htmlspecialchars($row['sellingmethod']) . "</p>"; ?>
 
-                <?php 
-                    if($row['sellingmethod'] == "Auction"){
-                        echo "<div class='form-group'>
+                <?php if($row['sellingmethod'] == "Auction"): ?>
+                    
+                        <form  action="../Back-End/Auctions.php" method='post'>
+                        <div class='form-group'>
                         <label class='signuptext' for='sellingmethod'>Bid:  </b> </label>
-                        <input type='number' name='bidPrice' id='bidPrice' maxlength='12' required='required' min='0' max='2147483647' placeholder='current_price'/>
-                        <input type='hidden' name='itemID' value=" . htmlspecialchars($row['itemid']). "/>
-                        </div>";
+                        <?php echo "<input type='number' name='bidPrice' id='bidPrice' maxlength='12' required='required' min='0' max='2147483647' placeholder='Must be greater than $" . htmlspecialchars($row['price']) . "'/>" ; ?>
+                        <?php echo "<input type='hidden' name='itemID' value=" . htmlspecialchars($row['itemid']). "/>"; ?>
+                        <?php echo "<input type='hidden' name='pageNo' value=" . htmlspecialchars($pageno). "/>"; ?>
+                        <button type='submit' class='navbarbutton2' name='sendBid'>Bid</button>
+                        <p><span style="color:red"><?php echo $errorMsg ?></span></p>
+                        </div>
+                        </form>
                         
-                    }?>
+                <?php endif ?>
+
 
                 
 
