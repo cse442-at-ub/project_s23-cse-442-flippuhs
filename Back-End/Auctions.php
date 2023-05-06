@@ -3,7 +3,7 @@ require_once("DBConn.php");
 require_once("CSRF.php");
 
 session_start();
-/*
+
 if (!CSRF::verifyToken($_POST['csrf_token'])) {
     header("Location: ../Front-End/login.php");
 }
@@ -11,7 +11,7 @@ if (!CSRF::verifyToken($_POST['csrf_token'])) {
 else{
 
     
-*/
+
     if (isset($_POST['sendBid'])) {
         $dbConn = new DBConn();
         $conn = $dbConn->connect();
@@ -28,7 +28,7 @@ else{
         
         $item_name = $dbConn->getListName($itemID);
         if($timeCheck){
-            header("Location: ../Front-End/Homepage.php?error=2");
+            header("Location: ../Front-End/Homepage.php?error=2&itemname=" . $item_name);
         }
         elseif($bid > $list_price){
             $dbConn->insertBid($itemID, $sender_username, $bid);
@@ -36,7 +36,7 @@ else{
             header("Location: ../Front-End/Homepage.php?pageno=".$page);
         }
         else{
-            header("Location: ../Front-End/Homepage.php?error=1&itemname=" . $item_name);
+            header("Location: ../Front-End/Homepage.php?error=1&itemname=" . htmlspecialchars($item_name));
         }
         
        
@@ -45,4 +45,4 @@ else{
     }
 
     
-//}
+}

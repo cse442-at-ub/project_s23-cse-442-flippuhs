@@ -19,11 +19,11 @@ $errors = array (
 
 $errorMsg = "";
 
-$itemErrorId = isset($_GET['itemdesc']) ? (string)$_GET['itemdesc'] : null;
+$itemErrorId = isset($_GET['itemname']) ? (string)$_GET['itemname'] : null;
 $errorId = isset($_GET['error']) ? (int)$_GET['error'] : 0;
 if ($errorId != 0 && array_key_exists($errorId, $errors)) {
     $errorMsg = $errors[$errorId];
-    $errorMsg = $errorMsg . " on listing, " . strval($itemErrorId);
+    $errorMsg = $errorMsg . " on listing, " . $itemErrorId;
 }
 
 
