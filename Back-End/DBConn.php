@@ -4,8 +4,8 @@ require_once("User.php");
 class DBConn {
     public $conn;
     private $servername = "oceanus.cse.buffalo.edu";
-    private $username = "cho29";
-    private $password = "50306365";
+    private $username = "jeaviles";
+    private $password = "50265507";
     private $dbname = "cse442_2023_spring_team_v_db";
 
     private $user;
@@ -125,7 +125,8 @@ class DBConn {
             imagepath VARCHAR(2048) NOT NULL,
             username VARCHAR(512) NOT NULL,
             itemstatus VARCHAR(50) NOT NULL,
-            sellingmethod VARCHAR(50) NOT NULL
+            sellingmethod VARCHAR(50) NOT NULL,
+            listTime INT NOT NULL
             )";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -651,10 +652,10 @@ class DBConn {
         }
     }
 
-    function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username, $selling_method){
-        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus, sellingmethod) VALUES (?,?,?,?,?,?,?)");
+    function insertNewListing($itemname, $itemdesc, $price, $imagepath, $username, $selling_method, $time){
+        $stmt = $this->conn->prepare("INSERT INTO Listings (itemname, itemdesc, price, imagepath, username, itemstatus, sellingmethod, listTime) VALUES (?,?,?,?,?,?,?,?)");
         $forsale = "For sale";
-        $stmt->bind_param("ssissss",$itemname, $itemdesc, $price, $imagepath, $username, $forsale, $selling_method);
+        $stmt->bind_param("ssissssi",$itemname, $itemdesc, $price, $imagepath, $username, $forsale, $selling_method, $time);
         if($stmt->execute()==true){
             $this->printToConsole("Inserted new listing");
         }
@@ -672,6 +673,23 @@ class DBConn {
         }
         else{
             $this->printToConsole("Failed to insert new Message");
+        }
+    }
+
+    function checkTime($itemID){
+        $stmt = $this->conn->prepare("SELECT listTime FROM Listings WHERE itemid = ? ");
+        $stmt->bind_param("i", $itemID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if(time() > $result){
+            $sold = "Sold";
+            $stmt = $this->conn->prepare("UPDATE Listings SET itemstatus=? WHERE itemid= ?");
+            $stmt->bind_param("ss",$sold,$itemID);
+            $stmt->execute();
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

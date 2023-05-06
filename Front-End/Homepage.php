@@ -14,6 +14,7 @@ if(!isset($_SERVER['HTTPS'])||$_SERVER['HTTPS']!='on'){
 
 $errors = array (
     1 => "Bid must be higher than the current price",
+    2 => "The auction is over",
 );
 
 $errorMsg = "";
@@ -132,9 +133,18 @@ else{
                 <?php echo "<b><p class='signuptext' for='price'>Price: </b>" . "$". htmlspecialchars($row['price']) . "</p>"; ?>
 
                 <?php echo "<b><p class='signuptext' for='sellingMethod'>Selling Method: </b>" . htmlspecialchars($row['sellingmethod']) . "</p>"; ?>
-
+                
                 <?php if($row['sellingmethod'] == "Auction"): ?>
-                    
+                        <?php $timeLeft = (time() - $row['listTime']) / 3600;?>
+                        <?php $timeLeft = round($timeLeft, 2);?>
+                        <?php $timestatus = "Seconds left to Bid!";?>
+                        <?php if($timeLeft > 0){
+                            $timestatus = (string)$timeLeft + " hours left!";
+                        }
+                        ?>
+
+
+                        <?php echo "<b><p class='signuptext' for='sellingMethod'>Time left in auction: </b>" . $timestatus . "</p>"; ?>
                         <form  action="../Back-End/Auctions.php" method='post'>
                         <div class='form-group'>
                         <label class='signuptext' for='sellingmethod'>Bid:  </b> </label>
@@ -147,16 +157,8 @@ else{
                         </form>
                         
                 <?php endif ?>
-
-
-                
-
                 
                 <?php echo "<b><p class='signuptext' for='price'>Distance: </b>" . htmlspecialchars($row['distance']) . " miles" . "</p>"; ?>
-
-                
-
-
                 <?php echo "<b><p class='signuptext' for='seller'>Seller: </b>" . "<a href=../Front-End/SellerProfile.php?sellername={$row['username']}>" . htmlspecialchars($row['username']) . "</a></p>"; ?>
         <?php echo "</div>" ?>
         </td>
